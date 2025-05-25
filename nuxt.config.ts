@@ -10,6 +10,11 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss'
   ],
   fonts: {
-    
+    defaults: { weights: [400,700], styles: ['normal'] },
+    families: [
+      { name: 'Roboto', provider: 'google' }
+    ],
+    provider: 'google',
+    assets: { prefix: '/_fonts/' } 
   }
 })
