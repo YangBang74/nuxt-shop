@@ -1,9 +1,5 @@
-<script setup lang="ts">
-definePageMeta({
-  layout: 'default',
-});
-const route = useRoute();
-const id = route.params.id;
+import { ref, onMounted } from 'vue';
+
 const snakers = ref([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
@@ -11,7 +7,7 @@ const error = ref<string | null>(null);
 async function fetchData() {
   try {
     loading.value = true;
-    const response = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${id}`);
+    const response = await fetch('https://175061237ca5525f.mokky.dev/snakers');
     const data = await response.json();
 
     if (!response.ok) {
@@ -26,6 +22,3 @@ async function fetchData() {
   }
 }
 onMounted(fetchData);
-</script>
-
-<template>Cards Id</template>
