@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    count: number;
+    count?: number;
   }>(),
   {
     count: 0,
@@ -11,7 +11,7 @@ const props = withDefaults(
 
 <template>
   <div class="layout">
-    <header class="fixed w-full bg-blue-950 text-white">
+    <header class="fixed z-1000 w-full bg-blue-950 text-white">
       <div class="container mx-auto">
         <div class="flex justify-between items-center gap-5">
           <div class="font-bold py-3">Nuxt Shop</div>

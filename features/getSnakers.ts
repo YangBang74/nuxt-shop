@@ -1,24 +1,15 @@
-import { ref, onMounted } from 'vue';
-
-const snakers = ref([]);
-const loading = ref(true);
-const error = ref<string | null>(null);
-
-async function fetchData() {
+export default async function getSnakers() {
   try {
-    loading.value = true;
     const response = await fetch('https://175061237ca5525f.mokky.dev/snakers');
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Something went wrong');
+      throw new Error(data.message || 'Что-то пошло не так');
     }
-    snakers.value = data;
-    console.log(snakers);
-  } catch (err) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
+
+    return data;
+  } catch (err: any) {
+    console.error('Ошибка при загрузке сникеров:', err.message);
+    throw err;
   }
 }
-onMounted(fetchData);

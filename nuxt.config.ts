@@ -8,14 +8,19 @@ export default defineNuxtConfig({
     layouts: 'layouts',
     public: 'public',
   },
-  modules: ['@nuxt/fonts', '@nuxt/image', '@nuxt/ui', '@nuxt/icon', '@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxt/fonts',
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@nuxt/icon',
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+  ],
   fonts: {
-    defaults: { weights: [400, 700], styles: ['normal'] },
     families: [{ name: 'Roboto', provider: 'google' }],
-    provider: 'google',
-    assets: { prefix: '/_fonts/' },
   },
   nitro: {
     prerender: { routes: ['/'] },
   },
+  css: ['~/assets/style.css'],
 });
