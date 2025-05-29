@@ -6,10 +6,16 @@ export const useCardShop = defineStore(
   () => {
     const sneakers = ref<any[]>([]);
 
-    function addToCard(item: any) {
-      const exists = sneakers.value.find((i) => i.id === item.id);
+    function addToCard(item: any, size: number) {
+      if (!item || typeof size !== 'number') {
+        console.warn('Неверные данные для добавления в корзину');
+        return;
+      }
+
+      const exists = sneakers.value.find((i) => i.id === item.id && i.size === size);
+
       if (!exists) {
-        sneakers.value.push(item);
+        sneakers.value.push({ ...item, size });
       }
     }
 

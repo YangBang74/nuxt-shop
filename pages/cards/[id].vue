@@ -9,9 +9,10 @@ definePageMeta({
 });
 const route = useRoute();
 const id = route.params.id;
-const snakers = ref([]);
+const sneakers = ref([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
+const selectSize = ref<number | null>();
 
 async function fetchData() {
   try {
@@ -22,8 +23,7 @@ async function fetchData() {
     if (!response.ok) {
       throw new Error(data.message || 'Something went wrong');
     }
-    snakers.value = data;
-    console.log(snakers);
+    sneakers.value = data;
   } catch (err) {
     error.value = err.message;
   } finally {
@@ -34,7 +34,7 @@ onMounted(fetchData);
 
 async function onRatingChange(value: number) {
   try {
-    await updateSneakerRating(snakers.value.id, value);
+    await updateSneakerRating(sneakers.value.id, value);
     console.log(`Рейтинг обновлён: ${value}`);
   } catch (err) {
     console.error('Ошибка при обновлении рейтинга:', err);
@@ -47,38 +47,35 @@ async function onRatingChange(value: number) {
     <div class="container">
       <div class="flex justify-evenly md:flex-row items-center flex-col gap-x-10">
         <div class="w-full md:w-1/2 aspect-square border max-h-100 max-w-100 justify-center">
-          <NuxtImg :src="snakers.image" class="object-cover w-full h-full" />
+          <NuxtImg :src="sneakers.image" class="object-cover w-full h-full" />
         </div>
         <div class="md:w-1/2 w-full">
-          <h1 class="font-bold text-xl">{{ snakers.title }}</h1>
+          <h1 class="font-bold text-xl">{{ sneakers.title }}</h1>
           <div class="flex gap-4 my-10 flex-wrap">
             <button
               type="button"
-              v-for="(size, i) in snakers.sizes"
+              v-for="(size, i) in sneakers.sizes"
               :key="i"
               class="py-1 px-3 rounded border border-gray-500 text-sm hover:bg-gray-200"
+              @click="selectSize = size"
+              :class="{ 'bg-gray-500 text-white': selectSize === size }"
             >
               {{ size }}
             </button>
           </div>
           <div class="flex my-10 gap-2 items-center">
-            <Rating v-model:rating="snakers.rating" :id="snakers.id" />
-            <p class="font-bold text-sm">{{ snakers.rating }}</p>
+            <Rating v-model:rating="sneakers.rating" :id="sneakers.id" />
+            <p class="font-bold text-sm">{{ sneakers.rating }}</p>
           </div>
 
-          <p class="text-xl mb-10">Цена: {{ snakers.price }} тмт</p>
+          <p class="text-xl mb-10">Цена: {{ sneakers.price }} тмт</p>
           <button
             type="button"
             class="bg-acent py-2 text-sm items-start text-white rounded font-bold w-full"
-            @click="card.addToCard(snakers)"
+            @click="card.addToCard(sneakers, selectSize)"
           >
             Добавить в корзину
           </button>
-          <!-- <div class="text-gray-900 flex gap-1.5">
-        <button v-for="(size, i) in sizes" :key="i" class="w-7 h-7 border">
-          {{ size }}
-        </button>
-      </div> -->
         </div>
       </div>
     </div>
