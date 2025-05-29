@@ -16,7 +16,7 @@ const props = withDefaults(
     class="p-5 border border-gray-400 rounded-lg bg-white/90 text-black absolute right-[-10px] top-12 cursor-auto"
   >
     <h1 class="text-sm font-bold">Корзина</h1>
-    <div class="flex flex-col gap-2 my-4">
+    <div class="flex flex-col gap-2 mt-4" v-if="card.sneakers.length > 0">
       <div
         v-for="(item, i) in card.sneakers"
         :key="i"
@@ -47,5 +47,6 @@ const props = withDefaults(
         >Оформить заказ</NuxtLink
       >
     </div>
+    <div class="px-5 mt-4" v-else>пока корзина пуста</div>
   </article>
 </template>

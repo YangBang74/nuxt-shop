@@ -7,7 +7,7 @@ const modalIsActive = ref<boolean>(false);
 </script>
 
 <template>
-  <div class="layout">
+  <div class="layout flex flex-col justify-between">
     <header class="fixed z-1000 w-full bg-blue-950 text-white">
       <div class="container mx-auto">
         <div class="flex justify-between items-center gap-5 relative">
@@ -38,7 +38,7 @@ const modalIsActive = ref<boolean>(false);
         </div>
       </div>
     </header>
-    <main class="pt-13.5">
+    <main class="pt-13.5 flex-1">
       <slot />
     </main>
     <Footer />

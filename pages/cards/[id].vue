@@ -12,7 +12,7 @@ const id = route.params.id;
 const sneakers = ref([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
-const selectSize = ref<number | null>();
+const selectSize = ref<number | null>(null);
 
 async function fetchData() {
   try {
@@ -67,12 +67,12 @@ async function onRatingChange(value: number) {
             <Rating v-model:rating="sneakers.rating" :id="sneakers.id" />
             <p class="font-bold text-sm">{{ sneakers.rating }}</p>
           </div>
-
           <p class="text-xl mb-10">Цена: {{ sneakers.price }} тмт</p>
           <button
             type="button"
-            class="bg-acent py-2 text-sm items-start text-white rounded font-bold w-full"
+            class="bg-green-500 py-2 text-sm items-start text-white rounded font-bold w-full disabled:bg-gray-500 disabled:cursor-not-allowed"
             @click="card.addToCard(sneakers, selectSize)"
+            :disabled="selectSize === null || selectSize === 0"
           >
             Добавить в корзину
           </button>
