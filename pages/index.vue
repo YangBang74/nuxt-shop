@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import 'vue3-carousel/carousel.css';
 import { Carousel, Slide, Navigation as CarouselNavigation, Pagination } from 'vue3-carousel';
-import getSnakers from '~/services/getSnakers';
+import getSnakers from '@/services/getSnakers';
 import { useUserStore } from '#imports';
-import { useCardShop } from '@/stores/card';
-
-const card = useCardShop();
 
 const user = useUserStore();
-console.log(card);
 
 console.log(user.fullName);
 
@@ -122,12 +118,11 @@ const brands = [
           snapAlign="start"
         >
           <Slide v-for="(snake, i) in snakers" :key="snake.id">
-            <Card
+            <CardItems
               :image="snake.image"
               :id="snake.id"
               :title="snake.title"
               :price="snake.price"
-              @click="card.addToCard(snake)"
             />
           </Slide>
           <template #addons>

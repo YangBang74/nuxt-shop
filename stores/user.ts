@@ -1,21 +1,27 @@
 import { defineStore } from 'pinia';
 
-export const useUserStore = defineStore('user', () => {
-  const fullName = ref('');
-  const email = ref('');
-  const token = ref('');
+export const useUserStore = defineStore(
+  'user',
+  () => {
+    const fullName = ref('');
+    const email = ref('');
+    const token = ref('');
 
-  function setUser(data: { fullName: string; email: string; token: string }) {
-    fullName.value = data.fullName;
-    email.value = data.email;
-    token.value = data.token;
+    function setUser(name: string, mail: string, jwt: string) {
+      fullName.value = name;
+      email.value = mail;
+      token.value = jwt;
+    }
+
+    function logout() {
+      fullName.value = '';
+      email.value = '';
+      token.value = '';
+    }
+
+    return { fullName, email, token, setUser, logout };
+  },
+  {
+    persist: true,
   }
-
-  function logout() {
-    fullName.value = '';
-    email.value = '';
-    token.value = '';
-  }
-
-  return { fullName, email, setUser, logout };
-});
+);

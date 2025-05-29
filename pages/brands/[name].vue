@@ -31,7 +31,7 @@ onMounted(fetchData);
   <section class="my-20">
     <div class="container">
       <div class="flex justify-between items-start flex-wrap">
-        <Card
+        <CardItems
           v-for="snake in snakers"
           :key="snake.id"
           :image="snake.image"

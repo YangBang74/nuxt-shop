@@ -5,8 +5,8 @@
         v-for="i in maxRating"
         :key="i"
         fill="#E0E0E0"
-        width="30px"
-        height="30px"
+        width="20px"
+        height="20px"
         viewBox="0 0 1920 1920"
         xmlns="http://www.w3.org/2000/svg"
         stroke="#E0E0E0"
@@ -30,8 +30,8 @@
             v-for="i in maxRating"
             :key="i"
             fill="#FFD700"
-            width="30px"
-            height="30px"
+            width="20px"
+            height="20px"
             viewBox="0 0 1920 1920"
             xmlns="http://www.w3.org/2000/svg"
             stroke="#FFD700"
@@ -93,14 +93,16 @@ const ChangeRating = (i: number, rating: number) => {
 };
 
 async function voteRating(i: number, rating: number) {
-  ChangeRating(i, rating);
-  const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${props.id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ rating: newRating.value }),
-  });
-  emit('update:rating', Number(newRating.value.toFixed(1)));
-  if (!res.ok) throw new Error('Ошибка при обновлении рейтинга');
-  return res.json();
+  if (props.canVote) {
+    ChangeRating(i, rating);
+    const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${props.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rating: newRating.value }),
+    });
+    emit('update:rating', Number(newRating.value.toFixed(1)));
+    if (!res.ok) throw new Error('Ошибка при обновлении рейтинга');
+    return res.json();
+  }
 }
 </script>
