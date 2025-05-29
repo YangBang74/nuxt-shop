@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import 'vue3-carousel/carousel.css';
 import { Carousel, Slide, Navigation as CarouselNavigation, Pagination } from 'vue3-carousel';
-import getSnakers from '@/features/getSnakers';
+import getSnakers from '~/services/getSnakers';
+import { useUserStore } from '#imports';
+import { useCardShop } from '@/stores/card';
+
+const card = useCardShop();
+
+const user = useUserStore();
+console.log(card);
+
+console.log(user.fullName);
 
 definePageMeta({
   layout: 'default',
@@ -37,11 +45,11 @@ const heroSnake = [
 ];
 
 const brands = [
-  { name: 'Nike', logo: '/brands/Nike-Logo-3.svg' },
-  { name: 'Adidas', logo: '/brands/adidas-logo-16.svg' },
-  { name: 'Puma', logo: '/brands/PUMA-Logo-2.svg' },
-  { name: 'Reebok', logo: '/brands/Reebok_logo-12.svg' },
-  { name: 'Convers', logo: '/brands/Converse-Logo-1.svg' },
+  { name: 'nike', logo: '/brands/Nike-Logo-3.svg' },
+  { name: 'adidas', logo: '/brands/adidas-logo-16.svg' },
+  { name: 'puma', logo: '/brands/PUMA-Logo-2.svg' },
+  { name: 'reebok', logo: '/brands/Reebok_logo-12.svg' },
+  { name: 'convers', logo: '/brands/Converse-Logo-1.svg' },
 ];
 </script>
 <template>
@@ -81,7 +89,7 @@ const brands = [
   </section>
   <section class="my-20">
     <div class="container">
-      <h1 class="font-bold text-center text-4xl mb-5">Бренды</h1>
+      <h1 class="font-bold text-center text-4xl mb-20">Бренды</h1>
       <div class="flex justify-between items-center">
         <Carousel :wrap-around="true" :gap="50" itemsToShow="auto" class="w-full">
           <Slide v-for="(brand, i) in brands" :key="i">
@@ -103,7 +111,7 @@ const brands = [
   </section>
   <section class="my-40">
     <div class="container">
-      <h1 class="font-bold text-center text-4xl mb-10">Новое поступлание</h1>
+      <h1 class="font-bold text-center text-4xl mb-20">Новое поступлание</h1>
       <div class="flex justify-between items-center relative">
         <Carousel
           :wrap-around="true"
@@ -114,7 +122,13 @@ const brands = [
           snapAlign="start"
         >
           <Slide v-for="(snake, i) in snakers" :key="snake.id">
-            <Card :image="snake.image" :id="snake.id" :title="snake.title" :price="snake.price" />
+            <Card
+              :image="snake.image"
+              :id="snake.id"
+              :title="snake.title"
+              :price="snake.price"
+              @click="card.addToCard(snake)"
+            />
           </Slide>
           <template #addons>
             <CarouselNavigation class="items">
@@ -158,7 +172,7 @@ const brands = [
 .items.carousel__next,
 .items.carousel__prev {
   position: absolute;
-  top: 400px;
+  top: -20px;
 }
 .items.carousel__next {
   left: 55px;

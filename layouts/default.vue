@@ -1,12 +1,7 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    count?: number;
-  }>(),
-  {
-    count: 0,
-  }
-);
+import { useCardShop } from '@/stores/card';
+
+const card = useCardShop();
 </script>
 
 <template>
@@ -20,7 +15,7 @@ const props = withDefaults(
               >Главная</NuxtLink
             >
             <NuxtLink to="/about" class="py-3 text-gray-300 hover:text-white transition"
-              >Католог</NuxtLink
+              >Каталог</NuxtLink
             >
           </nav>
           <button type="button" class="flex py-3 items-center gap-1">
@@ -29,7 +24,7 @@ const props = withDefaults(
               <div
                 class="w-4 h-4 bg-green-500 absolute top-[-2px] right-[-3px] text-[10px] rounded-full"
               >
-                {{ count }}
+                {{ card.sneakers.length }}
               </div>
             </div>
           </button>
@@ -39,11 +34,6 @@ const props = withDefaults(
     <main class="pt-13.5">
       <slot></slot>
     </main>
-    <footer>
-      <div class="container mx-auto">
-        <p>Footer content goes here</p>
-      </div>
-    </footer>
+    <Footer />
   </div>
 </template>
-<style scoped></style>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { updateSneakerRating } from '../services/rating';
+
 definePageMeta({
   layout: 'default',
 });
@@ -26,6 +28,17 @@ async function fetchData() {
   }
 }
 onMounted(fetchData);
+
+const rating = ref(snakers.value.rating);
+
+async function onRatingChange(value: number) {
+  try {
+    await updateSneakerRating(snakers.value.id, value);
+    console.log(`Рейтинг обновлён: ${value}`);
+  } catch (err) {
+    console.error('Ошибка при обновлении рейтинга:', err);
+  }
+}
 </script>
 
 <template>
@@ -47,7 +60,11 @@ onMounted(fetchData);
               {{ size }}
             </button>
           </div>
-          <Reating />
+          <div class="flex my-10 gap-3">
+            <Rating v-model:rating="snakers.rating" :id="snakers.id" />
+            <p class="font-bold text-lg">{{ snakers.rating }}</p>
+          </div>
+
           <p class="text-3xl mb-10">Цена: {{ snakers.price }} тмт</p>
           <button type="button" class="bg-acent py-5.5 text-xl text-white rounded font-bold w-full">
             Добавить в корзину

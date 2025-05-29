@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
   ],
   fonts: {
-    families: [{ name: 'Roboto', provider: 'google' }],
+    families: [{ name: 'Montserrat', provider: 'google' }],
   },
   nitro: {
     prerender: { routes: ['/'] },
