@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useCardShop } from '#imports';
-
-const card = useCardShop();
+const cart = useCartShop();
 const props = withDefaults(
   defineProps<{
     class: string;
@@ -16,9 +14,9 @@ const props = withDefaults(
     class="p-5 border border-gray-400 rounded-lg bg-white/90 text-black absolute right-[-10px] top-12 cursor-auto"
   >
     <h1 class="text-sm font-bold">Корзина</h1>
-    <div class="flex flex-col gap-2 mt-4" v-if="card.sneakers.length > 0">
+    <div class="flex flex-col gap-2 mt-4" v-if="cart.sneakers.length > 0">
       <div
-        v-for="(item, i) in card.sneakers"
+        v-for="(item, i) in cart.sneakers"
         :key="i"
         class="flex justify-between items-center gap-3"
       >
@@ -35,7 +33,7 @@ const props = withDefaults(
         </div>
         <button
           type="button"
-          @click="card.deleteItem(i)"
+          @click="cart.deleteItem(i)"
           class="border border-gray-700 text-gray-700 hover:bg-red-500 hover:text-white rounded-sm h-6 flex justify-center items-center"
         >
           <Icon name="heroicons:x-mark" size="20" stroke="3" />

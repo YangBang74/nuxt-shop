@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 const priceFrom = ref<number | null>(null);
 const priceTo = ref<number | null>(null);
 </script>

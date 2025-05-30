@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { updateSneakerRating } from '../services/rating';
-import { useCardShop } from '#imports';
-
-const card = useCardShop();
+const card = useCartShop();
 
 definePageMeta({
   layout: 'default',

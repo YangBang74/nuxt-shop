@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useCardShop = defineStore(
-  'card',
+export const useCartShop = defineStore(
+  'cart',
   () => {
     const sneakers = ref<any[]>([]);
 
-    function addToCard(item: any, size: number) {
+    function addToCart(item: any, size: number) {
       if (!item || typeof size !== 'number') {
         console.warn('Неверные данные для добавления в корзину');
         return;
@@ -35,7 +35,7 @@ export const useCardShop = defineStore(
 
     return {
       sneakers,
-      addToCard,
+      addToCart,
       deleteItem,
     };
   },

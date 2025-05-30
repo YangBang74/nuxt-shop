@@ -59,7 +59,7 @@ const brands = [
             низким ценам
           </p>
           <NuxtLink
-            to="/cards"
+            to="/sneakers"
             class="bg-blue-950 text-white px-10 py-3 rounded hover:bg-blue-800 transition"
             >Перейти к покупкам</NuxtLink
           >
@@ -118,7 +118,7 @@ const brands = [
           snapAlign="start"
         >
           <Slide v-for="(snake, i) in snakers" :key="snake.id">
-            <CardItems
+            <CartItems
               :image="snake.image"
               :id="snake.id"
               :title="snake.title"
