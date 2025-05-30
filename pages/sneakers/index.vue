@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getWithFilter } from '~/services/filterForSneakers';
+
 definePageMeta({
   layout: 'default',
 });
@@ -15,45 +17,31 @@ const filters = ref({
   selectBrand: null as string | null,
 });
 
-async function getWithFilter(filter: {
-  priceFrom: number | null;
-  priceTo: number | null;
-  selectSize: number | null;
-  selectStyle: string | null;
-  selectBrand: string | null;
-}) {
-  const { priceFrom, priceTo, selectSize, selectStyle, selectBrand } = filter;
+async function loadSneakers(item: any) {
   loading.value = true;
+  error.value = null;
   try {
-    const params = new URLSearchParams();
-    if (priceFrom !== null) params.append('price[from]', String(priceFrom));
-    if (priceTo !== null) params.append('price[to]', String(priceTo));
-    if (selectSize !== null) params.append('sizes[]', String(selectSize));
-    if (selectStyle !== null) params.append('style[]', selectStyle);
-    if (selectBrand !== null) params.append('brand', selectBrand);
-
-    const url = `https://175061237ca5525f.mokky.dev/snakers?${params.toString()}`;
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (!response.ok) throw new Error(data.message || 'Что-то пошло не так');
-
-    sneakers.value = data;
-    console.log(sneakers.value);
-  } catch (err: any) {
-    error.value = err.message || 'Ошибка при загрузке сникеров';
+    const data = await getWithFilter(item);
+    if (typeof data === 'string') {
+      error.value = data;
+      sneakers.value = [];
+    } else {
+      sneakers.value = data;
+    }
+  } catch (err) {
+    error.value = (err as Error).message || 'Неизвестная ошибка';
   } finally {
     loading.value = false;
   }
 }
 
-onMounted(() => getWithFilter(filters.value));
+onMounted(() => loadSneakers(filters.value));
 
 watch(
   filters,
   (newFilters) => {
     console.log('Обновились фильтры:', newFilters);
-    getWithFilter(newFilters);
+    loadSneakers(newFilters);
   },
   { deep: true }
 );
