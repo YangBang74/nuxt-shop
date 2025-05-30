@@ -17,7 +17,6 @@ function onScroll() {
 onMounted(() => window.addEventListener('scroll', onScroll));
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 </script>
-
 <template>
   <div class="layout flex flex-col justify-between">
     <header class="relative z-50">

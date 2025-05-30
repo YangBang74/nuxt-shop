@@ -26,7 +26,17 @@ onMounted(async () => {
   <section class="my-10">
     <div class="container">
       <div class="flex justify-between gap-5 my-10 items-start">
-        <Filter />
+        <Filter class="w-80" />
+        <div class="flex justify-between items-start gap-5 w-full">
+          <CartItems
+            v-for="(sneak, i) of sneakers"
+            :key="i"
+            :id="sneak.id"
+            :image="sneak.image"
+            :title="sneak.title"
+            :price="sneak.price"
+          />
+        </div>
       </div>
     </div>
   </section>

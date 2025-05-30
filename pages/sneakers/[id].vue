@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const card = useCartShop();
+const cart = useCartShop();
 
 definePageMeta({
   layout: 'default',
@@ -68,7 +68,7 @@ async function onRatingChange(value: number) {
           <button
             type="button"
             class="bg-green-500 py-2 text-sm items-start text-white rounded font-bold w-full disabled:bg-gray-500 disabled:cursor-not-allowed"
-            @click="card.addToCard(sneakers, selectSize)"
+            @click="cart.addToCart(sneakers, selectSize)"
             :disabled="selectSize === null || selectSize === 0"
           >
             Добавить в корзину
