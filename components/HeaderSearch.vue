@@ -1,21 +1,5 @@
 <template>
-  <!-- <div class="relative bg-white text-black">
-    <button @click="toggle" class="p-2">
-      <NuxtIcon name="lucide:search" />
-    </button>
-    <transition name="fade">
-      <div v-if="isActive" class="absolute right-0 mt-2 w-64">
-        <input
-          id="header-search-input"
-          v-model="query"
-          @keyup.enter="submit"
-          @blur="isActive = false"
-          class="w-full border rounded px-3 py-2"
-        />
-      </div>
-    </transition>
-  </div> -->
-  <div class="flex items-center relative flex-1">
+  <div class="flex items-center relative flex-1/2 max-w-150">
     <input
       id="header-search-input"
       v-model="query"

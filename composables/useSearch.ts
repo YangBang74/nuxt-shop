@@ -11,7 +11,6 @@ export function useSearch() {
     if (!q) return;
     if (route.path === '/search') {
       router.replace({ query: { q } });
-      location.reload();
     } else {
       router.push({ path: '/search', query: { q } });
     }

@@ -1,24 +1,36 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 const cart = useCartShop();
 const modalIsActive = ref<boolean>(false);
+
+const showBlackBar = ref(true);
+let lastScrollY = 0;
+const delta = 10;
+
+function onScroll() {
+  const current = window.scrollY;
+  if (Math.abs(current - lastScrollY) < delta) return;
+  showBlackBar.value = current < lastScrollY;
+  lastScrollY = current;
+}
+
+onMounted(() => window.addEventListener('scroll', onScroll));
+onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 </script>
+
 <template>
   <div class="layout flex flex-col justify-between">
-    <header>
-      <div class="fixed z-1000 w-full bg-black/95 text-white">
+    <header class="relative z-50">
+      <div
+        :class="[
+          'fixed top-0 left-0 w-full bg-black/95 text-white transition-transform',
+          showBlackBar ? 'translate-y-0' : '-translate-y-full',
+        ]"
+      >
         <div class="container mx-auto">
           <div class="flex justify-between items-center gap-5 relative">
-            <div class="font-bold py-3">Nuxt Shop</div>
-            <nav class="flex gap-10">
-              <NuxtLink to="/" class="py-3 text-gray-300 hover:text-white transition">
-                Главная
-              </NuxtLink>
-              <NuxtLink to="/sneakers" class="py-3 text-gray-300 hover:text-white transition">
-                Каталог
-              </NuxtLink>
-            </nav>
+            <NuxtLink to="/" class="font-bold py-3">Nuxt Shop</NuxtLink>
             <HeaderSearch />
-            
             <button
               type="button"
               @click="modalIsActive = !modalIsActive"
@@ -37,9 +49,24 @@ const modalIsActive = ref<boolean>(false);
           </div>
         </div>
       </div>
+      <div class="bg-blue-950 text-white pt-13.5">
+        <div class="container">
+          <nav class="flex gap-10">
+            <NuxtLink to="/" class="py-3 text-gray-300 hover:text-white transition">
+              Главная
+            </NuxtLink>
+            <NuxtLink to="/sneakers" class="py-3 text-gray-300 hover:text-white transition">
+              Каталог
+            </NuxtLink>
+            <NuxtLink to="/about" class="py-3 text-gray-300 hover:text-white transition">
+              О нас
+            </NuxtLink>
+          </nav>
+        </div>
+      </div>
     </header>
 
-    <main class="pt-13.5 flex-1">
+    <main class="flex-1">
       <slot />
     </main>
     <Footer />
