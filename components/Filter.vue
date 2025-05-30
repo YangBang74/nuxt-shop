@@ -1,13 +1,15 @@
 <script setup lang="ts">
-const priceFrom = ref<number | null>(null);
-const priceTo = ref<number | null>(null);
+const modelValue = defineModel<{
+  priceFrom: number | null;
+  priceTo: number | null;
+  selectSize: number | null;
+  selectStyle: string | null;
+  selectBrand: string | null;
+}>();
 
 const sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
 const styles = ['running', 'casual', 'basketball', 'skate', 'minimal'];
 const brands = ['nike', 'converse', 'vans', 'puma', 'adidas'];
-const selectSize = ref<number | null>(null);
-const selectStyle = ref<string | null>(null);
-const selectBrand = ref<string | null>(null);
 </script>
 <template>
   <article class="w-70 p-5 bg-gray-300 rounded-r-sm">
@@ -17,13 +19,13 @@ const selectBrand = ref<string | null>(null);
       <div class="flex items-start my-4 gap-2 md:flex-nowrap flex-wrap">
         <input
           type="text"
-          v-model="priceFrom"
+          v-model.number="modelValue.priceFrom"
           placeholder="От"
           class="w-full px-2 py-1 border border-gray-400 focus:outline-0 bg-gray-200 rounded"
         />
         <input
           type="text"
-          v-model="priceTo"
+          v-model.number="modelValue.priceTo"
           placeholder="До"
           class="w-full px-2 py-1 border border-gray-400 focus:outline-0 bg-gray-200 rounded"
         />
@@ -36,8 +38,8 @@ const selectBrand = ref<string | null>(null);
             v-for="(size, i) in sizes"
             class="bg-gray-200 w-7 h-7 border-gray-400 border"
             :key="i"
-            @click="selectSize = size"
-            :class="{ 'bg-gray-800 text-white': selectSize === size }"
+            @click="modelValue.selectSize = size"
+            :class="{ 'bg-gray-800 text-white': modelValue.selectSize === size }"
           >
             {{ size }}
           </button>
@@ -51,8 +53,8 @@ const selectBrand = ref<string | null>(null);
             v-for="(style, i) in styles"
             class="bg-gray-200 px-2 border-gray-400 border"
             :key="i"
-            @click="selectStyle = style"
-            :class="{ 'bg-gray-800 text-white': selectStyle === style }"
+            @click="modelValue.selectStyle = style"
+            :class="{ 'bg-gray-800 text-white': modelValue.selectStyle === style }"
           >
             {{ style }}
           </button>
@@ -66,8 +68,8 @@ const selectBrand = ref<string | null>(null);
             v-for="(brand, i) in brands"
             class="bg-gray-200 px-2 border-gray-400 border"
             :key="i"
-            @click="selectBrand = brand"
-            :class="{ 'bg-gray-800 text-white': selectBrand === brand }"
+            @click="modelValue.selectBrand = brand"
+            :class="{ 'bg-gray-800 text-white': modelValue.selectBrand === brand }"
           >
             {{ brand }}
           </button>

@@ -2,7 +2,7 @@
 const cart = useCartShop();
 const props = withDefaults(
   defineProps<{
-    class: string;
+    class?: string;
   }>(),
   {
     class: 'hidden',
