@@ -1,5 +1,4 @@
-// ~/composables/useSearch.js
-import { ref, nextTick } from 'vue';
+import { ref } from 'vue';
 import { useRouter, useRoute } from '#imports';
 
 export function useSearch() {
@@ -10,10 +9,9 @@ export function useSearch() {
   function submit() {
     const q = query.value.trim();
     if (!q) return;
-
-    // Если уже на /search → просто обновляем query, иначе — переходим
     if (route.path === '/search') {
       router.replace({ query: { q } });
+      location.reload();
     } else {
       router.push({ path: '/search', query: { q } });
     }

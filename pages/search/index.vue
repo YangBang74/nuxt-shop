@@ -1,32 +1,22 @@
 <template>
-  <div class="p-4">
+  <div class="p-4" v-if="results.length">
     <h1>Результаты поиска по «{{ q }}»</h1>
     <ul>
       <li v-for="item in results" :key="item.id">{{ item.title }}</li>
     </ul>
   </div>
+  <div v-else>По вашему запросу ничего не найдено</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute } from '#app';
 import { ref, watchEffect } from 'vue';
 
 const route = useRoute();
 const q = ref(route.query.q || '');
 const results = ref([]);
+const error = ref<string | null>(null);
 
-// const { data, error } = useAsyncData(
-//   () => ['search', q],
-//   () => {
-//     if (!q) return { items: [] };
-//     return $fetch(`https://175061237ca5525f.mokky.dev/snakers?title=*${q.value}', {
-//       method: 'GET',
-//       query: { search: q },
-//     });
-//   }
-// );
-
-const items = data.value?.items || []
 watchEffect(async function fetchData() {
   try {
     if (!q.value) return;
@@ -41,9 +31,4 @@ watchEffect(async function fetchData() {
     error.value = err.message;
   }
 });
-
-// definePageMeta({
-//   title: `Поиск: ${q}`,
-//   meta: [{ name: 'description', content: `Результаты поиска по запросу ${q}` }],
-// });
 </script>
