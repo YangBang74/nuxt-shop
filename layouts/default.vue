@@ -26,7 +26,7 @@ onMounted(() => window.addEventListener('scroll', onScroll));
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 </script>
 <template>
-  <div class="layout flex flex-col justify-between">
+  <div class="layout flex flex-col justify-between h-full">
     <header class="relative z-50">
       <div
         :class="[
@@ -75,7 +75,6 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
         </div>
       </div>
     </header>
-
     <main class="flex-1">
       <slot />
     </main>

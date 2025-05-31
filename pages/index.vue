@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import 'vue3-carousel/carousel.css';
 import { Carousel, Slide, Navigation as CarouselNavigation, Pagination } from 'vue3-carousel';
-import getSnakers from '@/services/getSnakers';
+import getSneakers from '@/services/getSneakers';
 import { useUserStore } from '#imports';
 
 const user = useUserStore();
-
-console.log(user.fullName);
 
 definePageMeta({
   layout: 'default',
@@ -25,7 +23,7 @@ const error = ref(null);
 onMounted(async () => {
   loading.value = true;
   try {
-    snakers.value = await getSnakers();
+    snakers.value = await getSneakers();
   } catch (err) {
     error.value = err.message || 'Ошибка при получении данных';
   } finally {

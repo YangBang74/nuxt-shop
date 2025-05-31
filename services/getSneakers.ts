@@ -1,4 +1,4 @@
-export default async function getSnakers() {
+export default async function getSneakers() {
   try {
     const response = await fetch('https://175061237ca5525f.mokky.dev/snakers');
     const data = await response.json();
