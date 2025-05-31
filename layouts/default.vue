@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
 const cart = useCartShop();
 const modalIsActive = ref<boolean>(false);
 
@@ -13,6 +17,10 @@ function onScroll() {
   showBlackBar.value = current < lastScrollY;
   lastScrollY = current;
 }
+
+watch(route, () => {
+  modalIsActive.value = false;
+});
 
 onMounted(() => window.addEventListener('scroll', onScroll));
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
@@ -44,7 +52,10 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
                 </div>
               </div>
             </button>
-            <ModalCart :style="{ display: modalIsActive ? 'block' : 'none' }" />
+            <ModalCart
+              :style="{ display: modalIsActive ? 'block' : 'none' }"
+              v-model:modal="modalState"
+            />
           </div>
         </div>
       </div>

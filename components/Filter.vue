@@ -10,6 +10,14 @@ const modelValue = defineModel<{
 const sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
 const styles = ['running', 'casual', 'basketball', 'skate', 'minimal'];
 const brands = ['nike', 'converse', 'vans', 'puma', 'adidas'];
+
+const resetValues = () => {
+  modelValue.value.priceFrom = null;
+  modelValue.value.priceTo = null;
+  modelValue.value.selectSize = null;
+  modelValue.value.selectStyle = null;
+  modelValue.value.selectBrand = null;
+};
 </script>
 <template>
   <article class="w-70 p-5 bg-gray-300 rounded-r-sm">
@@ -75,7 +83,13 @@ const brands = ['nike', 'converse', 'vans', 'puma', 'adidas'];
           </button>
         </div>
       </div>
-      <button type="button" class="bg-blue-500 py-1 rounded-sm text-white w-full">Применить</button>
+      <button
+        type="button"
+        @click="resetValues()"
+        class="bg-blue-500 py-1 rounded-sm text-white w-full"
+      >
+        сбросить
+      </button>
     </form>
   </article>
 </template>

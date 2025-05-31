@@ -51,7 +51,7 @@ watch(
     <div class="container">
       <div class="flex justify-between gap-5 my-10 items-start">
         <Filter class="w-80" v-model="filters" />
-        <div class="flex justify-between items-start gap-5 w-full">
+        <div class="flex justify-start items-start gap-5 w-full">
           <CartItems
             v-for="(sneak, i) of sneakers"
             :key="i"

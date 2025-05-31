@@ -16,6 +16,11 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
   ],
+  runtimeConfig: {
+    TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID,
+    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+  },
+
   fonts: {
     families: [{ name: 'Montserrat', provider: 'google' }],
   },

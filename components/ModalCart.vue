@@ -1,20 +1,12 @@
 <script setup lang="ts">
 const cart = useCartShop();
-const props = withDefaults(
-  defineProps<{
-    class?: string;
-  }>(),
-  {
-    class: 'hidden',
-  }
-);
 </script>
 <template>
   <article
     class="p-5 border border-gray-400 rounded-lg bg-white/90 text-black absolute right-[-10px] top-12 cursor-auto"
   >
     <h1 class="text-sm font-bold">Корзина</h1>
-    <div class="flex flex-col gap-2 mt-4" v-if="cart.sneakers.length > 0">
+    <div class="flex flex-col gap-4 mt-4 px-0" v-if="cart.sneakers.length > 0">
       <div
         v-for="(item, i) in cart.sneakers"
         :key="i"
@@ -42,8 +34,8 @@ const props = withDefaults(
       <NuxtLink
         to="/buy"
         class="text-[12px] block font-medium bg-gray-200 py-2 text-center rounded-sm mt-4 hover:bg-green-400 hover:text-white"
-        >Оформить заказ</NuxtLink
-      >
+        >Оформить заказ
+      </NuxtLink>
     </div>
     <div class="px-5 mt-4" v-else>пока корзина пуста</div>
   </article>
