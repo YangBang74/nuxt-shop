@@ -33,10 +33,15 @@ export const useCartShop = defineStore(
       sneakers.value.splice(index, 1);
     }
 
+    function nullItems() {
+      sneakers.value = [];
+    }
+
     return {
       sneakers,
       addToCart,
       deleteItem,
+      nullItems,
     };
   },
   {
