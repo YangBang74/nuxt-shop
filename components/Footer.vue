@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <div class="flex justify-between items-center">
         <div>
-          <p class="font-bold text-lg py-1">NuxtShop</p>
+          <p class="font-bold text-lg py-1">En.Shop</p>
         </div>
         <nav class="flex gap-3 items-center">
           <NuxtLink to="https://github.com/yangbang74" class="hover:text-gray-500" target="_blank">
