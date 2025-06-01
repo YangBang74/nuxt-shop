@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sendTelegramMessage } from '~/services/sendTelegramBot';
+import { sendTelegramMessage } from '~/services/set/sendTelegramBot';
 import ButtonLoader from '~/components/UI/ButtonLoader.vue';
 const cart = useCartShop();
 const name = ref('');

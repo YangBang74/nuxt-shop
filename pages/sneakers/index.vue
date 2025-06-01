@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getWithFilter } from '~/services/filterForSneakers';
+import { getWithFilter } from '~/services/get/filterForSneakers';
 
 definePageMeta({
   layout: 'default',

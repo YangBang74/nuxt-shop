@@ -3,9 +3,9 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore(
   'user',
   () => {
-    const fullName = ref('');
-    const email = ref('');
-    const token = ref('');
+    const fullName = ref<string | null>(null);
+    const email = ref<string | null>(null);
+    const token = ref<string | null>(null);
 
     function setUser(name: string, mail: string, jwt: string) {
       fullName.value = name;
@@ -14,9 +14,10 @@ export const useUserStore = defineStore(
     }
 
     function logout() {
-      fullName.value = '';
-      email.value = '';
-      token.value = '';
+      fullName.value = null;
+      email.value = null;
+      token.value = null;
+      navigateTo('/');
     }
 
     return { fullName, email, token, setUser, logout };

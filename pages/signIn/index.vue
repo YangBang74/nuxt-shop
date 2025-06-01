@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { signUp } from '@/services/set/signUp';
+import { signIn } from '@/services/set/signIn';
 import { useUserStore } from '~/stores/user';
 
 definePageMeta({
@@ -13,7 +13,7 @@ const registerFunction = async (event: Event) => {
   event.preventDefault();
   error.value = '';
   try {
-    const data = await signUp(name.value, mail.value, pass.value);
+    const data = await signIn(mail.value, pass.value);
     if (typeof data === 'string') {
       error.value = data;
       return;
@@ -37,11 +37,10 @@ const error = ref('');
   <section class="my-20">
     <div class="container">
       <div class="max-w-150 mx-auto">
-        <h1 class="font-bold text-4xl">Регистрация</h1>
-        <p class="text-gray-800 mt-5">Введите свои данные для регистрации</p>
+        <h1 class="font-bold text-4xl">Войти</h1>
+        <p class="text-gray-800 mt-5">Введите свои данные для входа в свой аккаунт</p>
         <p v-if="error" class="text-red-500 font-bold">{{ error }}</p>
         <form class="my-20 flex gap-5 flex-wrap" @submit="registerFunction">
-          <InputSign label="Полное имя" type="text" name="fullName" v-model="name" />
           <InputSign label="Электронная почта" type="email" name="email" v-model="mail" />
           <InputSign label="Пароль" type="password" name="password" v-model="pass" />
           <div class="flex items-center gap-1 w-full">
@@ -55,7 +54,7 @@ const error = ref('');
             Регистрироваться
           </button>
           <div class="mx-auto my-5">
-            У вас есть аккаунт? <NuxtLink to="signIn" class="text-blue-500">войти</NuxtLink>
+            У вас нету аккаунта? <NuxtLink to="signUp" class="text-blue-500">Регистрация</NuxtLink>
           </div>
         </form>
       </div>

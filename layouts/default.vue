@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '#imports';
 
+const user = useUserStore();
 const route = useRoute();
 
 const cart = useCartShop();
@@ -38,24 +40,34 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
           <div class="flex justify-between items-center gap-5 relative">
             <NuxtLink to="/" class="font-bold py-3">Nuxt Shop</NuxtLink>
             <HeaderSearch />
-            <button
-              type="button"
-              @click="modalIsActive = !modalIsActive"
-              class="flex py-3 items-center gap-1 relative"
-            >
-              <div class="relative">
-                <Icon name="heroicons-outline:shopping-cart" size="24" />
-                <div
-                  class="w-4 h-4 bg-green-500 absolute top-[-2px] right-[-3px] text-[10px] rounded-full text-center"
-                >
-                  {{ cart.sneakers.length }}
+            <div class="flex items-center gap-4">
+              <button type="button">
+                <NuxtLink to="/signUp" v-if="user.token === null">
+                  <Icon name="mdi:account" size="27" />
+                </NuxtLink>
+                <NuxtLink to="/profile" v-else>
+                  <Icon name="mdi:account" size="27" />
+                </NuxtLink>
+              </button>
+              <button
+                type="button"
+                @click="modalIsActive = !modalIsActive"
+                class="flex py-3 items-center gap-1 relative"
+              >
+                <div class="relative">
+                  <Icon name="heroicons-outline:shopping-cart" size="24" />
+                  <div
+                    class="w-4 h-4 bg-green-500 absolute top-[-2px] right-[-3px] text-[10px] rounded-full text-center"
+                  >
+                    {{ cart.sneakers.length }}
+                  </div>
                 </div>
-              </div>
-            </button>
-            <ModalCart
-              :style="{ display: modalIsActive ? 'block' : 'none' }"
-              v-model:modal="modalState"
-            />
+              </button>
+              <ModalCart
+                :style="{ display: modalIsActive ? 'block' : 'none' }"
+                v-model:modal="modalState"
+              />
+            </div>
           </div>
         </div>
       </div>

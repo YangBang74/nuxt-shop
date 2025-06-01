@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import 'vue3-carousel/carousel.css';
 import { Carousel, Slide, Navigation as CarouselNavigation, Pagination } from 'vue3-carousel';
-import getSneakers from '@/services/getSneakers';
+import getSneakers from '~/services/get/getSneakers';
 import { useUserStore } from '#imports';
 
 const user = useUserStore();
