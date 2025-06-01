@@ -45,7 +45,7 @@ ${CartToString()}`;
     city.value = '';
     address.value = '';
     details.value = '';
-    // cart.nullItems();
+    cart.nullItems();
   } catch (err) {
     return err;
   } finally {

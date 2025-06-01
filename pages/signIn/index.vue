@@ -20,7 +20,9 @@ const registerFunction = async (event: Event) => {
     }
     console.log(data);
     user.setUser(data.data.fullName, data.data.email, data.token);
-    navigateTo('/');
+    if (user.email === 'yangproger@gmail.com' && user.token === '123123') {
+      navigateTo('/admin');
+    } else navigateTo('/');
   } catch (err: any) {
     console.error(err);
     error.value = 'Непредвиденная ошибка при регистрации';
