@@ -2,26 +2,19 @@
 import { ref } from 'vue';
 import { updateSneaker } from '~/services/set/changeSneake';
 const props = defineProps<{
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  brand: string;
-  rating: number;
-  sizes: number[];
-  styles: string[];
+  item: string[];
 }>();
 
 const isEditing = ref(false);
 const isSaving = ref(false);
 const saveStatus = ref<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-const currentTitle = ref(props.title);
-const currentBrand = ref(props.brand);
-const currentPrice = ref(props.price);
-const currentRating = ref(props.rating);
-const currentSizes = ref<number[]>([...props.sizes]);
-const currentStyles = ref<string[]>([...props.styles]);
+const currentTitle = ref(props.item.title);
+const currentBrand = ref(props.item.brand);
+const currentPrice = ref(props.item.price);
+const currentRating = ref(props.item.rating);
+const currentSizes = ref<number[]>([...props.item.sizes]);
+const currentStyles = ref<string[]>([...props.item.styles]);
 
 const editTitle = ref(currentTitle.value);
 const editBrand = ref(currentBrand.value);
@@ -64,7 +57,7 @@ const saveChanges = async () => {
     styles: newStyles,
   };
   try {
-    await updateSneaker(props.id, payload);
+    await updateSneaker(props.item.id, payload);
     currentTitle.value = payload.title;
     currentBrand.value = payload.brand;
     currentPrice.value = payload.price;
@@ -86,150 +79,145 @@ const saveChanges = async () => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border p-4 rounded-lg shadow-sm w-full bg-white hover:shadow-md transition-all"
-  >
-    <div class="flex items-center gap-4 flex-1">
-      <p class="text-gray-500 font-semibold min-w-[24px]">#{{ props.id }}</p>
-      <NuxtImg
-        :src="props.image"
-        alt="Product"
-        loading="lazy"
-        class="h-20 w-20 object-cover rounded border"
-      />
-      <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1 overflow-hidden">
-        <div class="w-full sm:w-32">
-          <template v-if="!isEditing">
-            <div class="text-sm font-medium truncate">{{ currentTitle }}</div>
-          </template>
-          <template v-else>
-            <input
-              v-model="editTitle"
-              type="text"
-              class="w-full px-2 py-1 border rounded text-sm"
-              placeholder="Название"
-            />
-          </template>
-        </div>
-        <div class="w-full sm:w-32">
-          <template v-if="!isEditing">
-            <div class="uppercase text-gray-600 truncate">{{ currentBrand }}</div>
-          </template>
-          <template v-else>
-            <input
-              v-model="editBrand"
-              type="text"
-              class="w-full px-2 py-1 border rounded text-sm uppercase"
-              placeholder="Бренд"
-            />
-          </template>
-        </div>
-        <div class="w-full sm:w-28">
-          <template v-if="!isEditing">
-            <div class="flex flex-wrap gap-1 text-xs text-gray-700">
-              <span
-                v-for="sz in currentSizes"
-                :key="sz"
-                class="px-2 py-1 border rounded bg-gray-50"
-              >
-                {{ sz }}
-              </span>
-            </div>
-          </template>
-          <template v-else>
-            <input
-              v-model="editSizesString"
-              type="text"
-              placeholder="Размеры, через запятую"
-              class="w-full px-2 py-1 border rounded text-xs"
-            />
-          </template>
-        </div>
-        <div class="w-full sm:w-28">
-          <template v-if="!isEditing">
-            <div class="flex flex-wrap gap-1 text-xs text-gray-700 capitalize">
-              <span
-                v-for="st in currentStyles"
-                :key="st"
-                class="px-2 py-1 border rounded bg-gray-50"
-              >
-                {{ st }}
-              </span>
-            </div>
-          </template>
-          <template v-else>
-            <input
-              v-model="editStylesString"
-              type="text"
-              placeholder="Стили, через запятую"
-              class="w-full px-2 py-1 border rounded text-xs capitalize"
-            />
-          </template>
+  <div class="px-5">
+    <div
+      class="flex flex-col sm:flex-row justify-center sm:items-center sm:justify-between gap-4 border p-4 rounded-lg shadow-sm w-full bg-white hover:shadow-md transition-all"
+    >
+      <div class="flex items-center gap-4 flex-1">
+        <p class="text-gray-500 font-semibold min-w-[24px]">#{{ props.item.id }}</p>
+        <NuxtImg
+          :src="props.item.image"
+          alt="Product"
+          loading="lazy"
+          class="h-20 w-20 object-cover rounded border"
+        />
+        <div
+          class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1 overflow-hidden"
+        >
+          <div class="w-full sm:w-32">
+            <template v-if="!isEditing">
+              <div class="text-sm font-medium truncate">{{ currentTitle }}</div>
+            </template>
+            <template v-else>
+              <input
+                v-model="editTitle"
+                type="text"
+                class="w-full px-2 py-1 border rounded text-sm"
+                placeholder="Название"
+              />
+            </template>
+          </div>
+          <div class="w-full sm:w-32">
+            <template v-if="!isEditing">
+              <div class="uppercase text-gray-600 truncate">{{ currentBrand }}</div>
+            </template>
+            <template v-else>
+              <input
+                v-model="editBrand"
+                type="text"
+                class="w-full px-2 py-1 border rounded text-sm uppercase"
+                placeholder="Бренд"
+              />
+            </template>
+          </div>
+          <div class="w-full sm:w-28">
+            <template v-if="!isEditing">
+              <div class="flex flex-wrap gap-1 text-xs text-gray-700">
+                <span
+                  v-for="sz in currentSizes"
+                  :key="sz"
+                  class="px-2 py-1 border rounded bg-gray-50"
+                >
+                  {{ sz }}
+                </span>
+              </div>
+            </template>
+            <template v-else>
+              <input
+                v-model="editSizesString"
+                type="text"
+                placeholder="Размеры, через запятую"
+                class="w-full px-2 py-1 border rounded text-xs"
+              />
+            </template>
+          </div>
+          <div class="w-full sm:w-28">
+            <template v-if="!isEditing">
+              <div class="flex flex-wrap gap-1 text-xs text-gray-700 capitalize">
+                <span
+                  v-for="st in currentStyles"
+                  :key="st"
+                  class="px-2 py-1 border rounded bg-gray-50"
+                >
+                  {{ st }}
+                </span>
+              </div>
+            </template>
+            <template v-else>
+              <input
+                v-model="editStylesString"
+                type="text"
+                placeholder="Стили, через запятую"
+                class="w-full px-2 py-1 border rounded text-xs capitalize"
+              />
+            </template>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 w-full sm:w-auto">
-      <div class="w-full sm:w-16 text-center">
-        <template v-if="!isEditing">
-          <p class="font-semibold text-gray-700">⭐ {{ currentRating }}</p>
-        </template>
-        <template v-else>
-          <input
-            v-model.number="editRating"
-            type="number"
-            min="0"
-            class="w-full px-2 py-1 border rounded text-center text-gray-700"
-            placeholder="Рейтинг"
-          />
-        </template>
-      </div>
-      <div class="w-full sm:w-20 text-center">
-        <template v-if="!isEditing">
-          <p class="font-semibold text-green-600">{{ currentPrice }} тмт</p>
-        </template>
-        <template v-else>
-          <input
-            v-model.number="editPrice"
-            type="number"
-            min="0"
-            class="w-full px-2 py-1 border rounded text-center text-green-600"
-            placeholder="Цена"
-          />
-        </template>
-      </div>
-      <div class="flex items-center gap-2">
-        <template v-if="!isEditing">
-          <button
-            type="button"
-            @click="startEditing"
-            class="text-blue-500 hover:text-blue-700 transition-colors"
-            aria-label="Редактировать"
-          >
-            <Icon name="mdi:pencil" class="w-5 h-5" />
-          </button>
-        </template>
-        <template v-else>
-          <button
-            type="button"
-            @click="saveChanges"
-            :disabled="isSaving"
-            class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 transition-colors"
-          >
-            {{ isSaving ? 'Сохраняю…' : 'Сохранить' }}
-          </button>
-          <button
-            type="button"
-            @click="
-              () => {
-                resetEdits();
-                isEditing = false;
-              }
-            "
-            class="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
-          >
-            Отмена
-          </button>
-        </template>
+      <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 w-full sm:w-auto">
+        <div class="w-full sm:w-16 text-center">
+          <template v-if="!isEditing">
+            <p class="font-semibold text-gray-700">⭐ {{ currentRating }}</p>
+          </template>
+        </div>
+        <div class="w-full sm:w-20 text-center">
+          <template v-if="!isEditing">
+            <p class="font-semibold text-green-600">{{ currentPrice }} тмт</p>
+          </template>
+          <template v-else>
+            <input
+              v-model.number="editPrice"
+              type="number"
+              min="0"
+              class="w-full px-2 py-1 border rounded text-center text-green-600"
+              placeholder="Цена"
+            />
+          </template>
+        </div>
+        <div class="flex items-center gap-2">
+          <template v-if="!isEditing">
+            <button
+              type="button"
+              @click="startEditing"
+              class="text-blue-500 hover:text-blue-700 transition-colors"
+              aria-label="Редактировать"
+            >
+              <Icon name="mdi:pencil" class="w-5 h-5" />
+            </button>
+          </template>
+          <template v-else>
+            <button
+              type="button"
+              @click="saveChanges"
+              :disabled="isSaving"
+              class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 transition-colors"
+            >
+              {{ isSaving ? 'Сохраняю…' : 'Сохранить' }}
+            </button>
+            <button
+              type="button"
+              @click="
+                () => {
+                  resetEdits();
+                  isEditing = false;
+                }
+              "
+              class="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
+            >
+              Отмена
+            </button>
+          </template>
+        </div>
       </div>
     </div>
   </div>

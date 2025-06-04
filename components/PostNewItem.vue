@@ -73,9 +73,9 @@ const addItem = (event: Event) => {
 </script>
 
 <template>
-  <article class="p-5 px-10 rounded-sm max-w-150 mx-auto">
+  <article class="p-5 px-10 rounded-sm max-w-150 mx-auto h-full relative">
     <h1 class="font-bold text-lg mb-4 text-center">Добавить новый товар</h1>
-    <form class="flex flex-col gap-4" @submit="addItem">
+    <form class="flex flex-col" @submit="addItem">
       <InputSign label="Название товара" v-model="cartName" type="text" name="cartName" />
       <InputSign label="Цена" v-model="cartPrice" type="text" name="cartPrice" />
       <InputSign label="Бренд" v-model="cartBrand" type="text" name="cartBrand" />
