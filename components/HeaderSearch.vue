@@ -8,8 +8,12 @@
       placeholder="Поиск..."
       class="bg-white rounded-l-lg h-7 flex-1 w-full px-2 py-px text-black focus:outline-0"
     />
-    <button type="button" class="bg-gray-300 rounded-r-lg pt-1 px-2" @click="submit">
-      <Icon name="lucide:search" class="text-black" />
+    <button
+      type="button"
+      @click="submit"
+      class="flex items-center justify-center px-4 py-1 bg-blue-600 rounded-r-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+      <Icon name="lucide:search" class="w-5 h-5 text-white" />
     </button>
   </div>
 </template>

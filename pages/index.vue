@@ -126,12 +126,18 @@ const brands = [
           <template #addons>
             <CarouselNavigation class="items">
               <template #prev>
-                <span>
-                  <Icon name="lucide:chevron-left" class="w-8 h-8" />
-                </span>
+                <button
+                  type="button"
+                  class="bg-white px-2 h-10 w-10 flex justify-center items-center rounded-full shadow hover:bg-gray-100 transition"
+                >
+                  <Icon name="lucide:chevron-left" class="w-6 h-6" />
+                </button>
               </template>
               <template #next>
-                <span>
+                <button
+                  type="button"
+                  class="bg-white px-2 h-10 w-10 flex justify-center items-center rounded-full shadow hover:bg-gray-100 transition"
+                >
                   <Icon name="lucide:chevron-right" class="w-8 h-8" />
                 </span>
               </template>
