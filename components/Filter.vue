@@ -19,77 +19,90 @@ const resetValues = () => {
   modelValue.value.selectBrand = null;
 };
 </script>
+
 <template>
-  <article class="w-70 p-5 bg-gray-300 rounded-r-sm">
-    <h3 class="text-2xl">Подбор по параметрам</h3>
-    <form>
-      <p class="text-gray-900 mt-5">Цена, тмт</p>
-      <div class="flex items-start my-4 gap-2 md:flex-nowrap flex-wrap">
+  <article class="bg-white rounded-lg shadow-md p-6 w-full sm:w-72 flex-shrink-0">
+    <h3 class="text-2xl font-semibold text-gray-800">Подбор по параметрам</h3>
+    <div class="mt-6">
+      <p class="text-gray-700 mb-2">Цена, тмт</p>
+      <div class="flex gap-2 flex-wrap">
         <input
-          type="text"
+          type="number"
           v-model.number="modelValue.priceFrom"
           placeholder="От"
-          class="w-full px-2 py-1 border border-gray-400 focus:outline-0 bg-gray-200 rounded"
+          class="w-full flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
         <input
-          type="text"
+          type="number"
           v-model.number="modelValue.priceTo"
           placeholder="До"
-          class="w-full px-2 py-1 border border-gray-400 focus:outline-0 bg-gray-200 rounded"
+          class="w-full flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
       </div>
-      <div class="my-5">
-        <p class="text-gray-900 mb-2">Размер</p>
-        <div class="flex justify-start items-start gap-2 flex-wrap">
-          <button
-            type="button"
-            v-for="(size, i) in sizes"
-            class="bg-gray-200 w-7 h-7 border-gray-400 border"
-            :key="i"
-            @click="modelValue.selectSize = size"
-            :class="{ 'bg-gray-800 text-white': modelValue.selectSize === size }"
-          >
-            {{ size }}
-          </button>
-        </div>
+    </div>
+    <div class="mt-6">
+      <p class="text-gray-700 mb-2">Размер</p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="(size, i) in sizes"
+          :key="i"
+          type="button"
+          @click="modelValue.selectSize = size"
+          :class="[
+            'px-2 py-1 border rounded-md text-sm font-medium transition',
+            modelValue.selectSize === size
+              ? 'bg-blue-600 text-white border-blue-600'
+              : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200',
+          ]"
+        >
+          {{ size }}
+        </button>
       </div>
-      <div class="my-5">
-        <p class="text-gray-900 mb-2">Стиль</p>
-        <div class="flex justify-start items-start gap-2 flex-wrap">
-          <button
-            type="button"
-            v-for="(style, i) in styles"
-            class="bg-gray-200 px-2 border-gray-400 border"
-            :key="i"
-            @click="modelValue.selectStyle = style"
-            :class="{ 'bg-gray-800 text-white': modelValue.selectStyle === style }"
-          >
-            {{ style }}
-          </button>
-        </div>
+    </div>
+    <div class="mt-6">
+      <p class="text-gray-700 mb-2">Стиль</p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="(style, i) in styles"
+          :key="i"
+          type="button"
+          @click="modelValue.selectStyle = style"
+          :class="[
+            'px-3 py-1 border rounded-md text-sm font-medium transition capitalize',
+            modelValue.selectStyle === style
+              ? 'bg-blue-600 text-white border-blue-600'
+              : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200',
+          ]"
+        >
+          {{ style }}
+        </button>
       </div>
-      <div class="my-5">
-        <p class="text-gray-900 mb-2">Бренды</p>
-        <div class="flex justify-start items-start gap-2 flex-wrap">
-          <button
-            type="button"
-            v-for="(brand, i) in brands"
-            class="bg-gray-200 px-2 border-gray-400 border"
-            :key="i"
-            @click="modelValue.selectBrand = brand"
-            :class="{ 'bg-gray-800 text-white': modelValue.selectBrand === brand }"
-          >
-            {{ brand }}
-          </button>
-        </div>
+    </div>
+    <div class="mt-6">
+      <p class="text-gray-700 mb-2">Бренд</p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="(brand, i) in brands"
+          :key="i"
+          type="button"
+          @click="modelValue.selectBrand = brand"
+          :class="[
+            'px-3 py-1 border rounded-md text-sm font-medium transition capitalize',
+            modelValue.selectBrand === brand
+              ? 'bg-blue-600 text-white border-blue-600'
+              : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200',
+          ]"
+        >
+          {{ brand }}
+        </button>
       </div>
-      <button
-        type="button"
-        @click="resetValues()"
-        class="bg-blue-500 py-1 rounded-sm text-white w-full"
-      >
-        сбросить
-      </button>
-    </form>
+    </div>
+    <button
+      type="button"
+      @click="resetValues"
+      class="mt-8 w-full bg-red-500 text-white py-2 rounded-md font-medium hover:bg-red-600 transition"
+    >
+      Сбросить
+    </button>
   </article>
 </template>
