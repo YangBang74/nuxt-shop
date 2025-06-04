@@ -10,7 +10,11 @@ const cart = useCartShop();
     </header>
     <div class="px-4 py-3 space-y-4">
       <div v-if="cart.sneakers.length > 0" class="space-y-4">
-        <div v-for="(item, i) in cart.sneakers" :key="i" class="flex items-center justify-between">
+        <div
+          v-for="(item, i) in cart.sneakers"
+          :key="i"
+          class="flex items-center justify-between space-y-2"
+        >
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-gray-50 rounded-md overflow-hidden border border-gray-200">
               <NuxtImg
@@ -35,7 +39,7 @@ const cart = useCartShop();
             <Icon name="heroicons:x-mark" class="w-4 h-4 text-gray-600 hover:text-white" />
           </button>
         </div>
-        <div class="border-t border-gray-200 pt-3 flex items-center justify-between">
+        <div class="border-t border-gray-200 py-3 mt-2 flex items-center justify-between">
           <span class="text-sm font-medium">Всего:</span>
           <span class="text-sm font-semibold"> {{ cart.totalPrice }} тмт </span>
         </div>
