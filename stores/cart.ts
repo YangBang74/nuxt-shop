@@ -5,6 +5,7 @@ export const useCartShop = defineStore(
   'cart',
   () => {
     const sneakers = ref<any[]>([]);
+    const totalPrice = ref<number>(0);
 
     function addToCart(item: any, size: number) {
       if (!item || typeof size !== 'number') {
@@ -16,6 +17,7 @@ export const useCartShop = defineStore(
 
       if (!exists) {
         sneakers.value.push({ ...item, size });
+        totalPrice.value += item.price;
       }
     }
 
@@ -30,15 +32,19 @@ export const useCartShop = defineStore(
         return;
       }
 
+      const removedItem = sneakers.value[index];
+      totalPrice.value -= removedItem.price;
       sneakers.value.splice(index, 1);
     }
 
     function nullItems() {
       sneakers.value = [];
+      totalPrice.value = 0;
     }
 
     return {
       sneakers,
+      totalPrice,
       addToCart,
       deleteItem,
       nullItems,
