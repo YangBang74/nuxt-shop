@@ -47,20 +47,24 @@ const brands = [
 ];
 </script>
 <template>
-  <section class="md:my-20 my-10">
-    <div class="container">
-      <div class="flex items-center justify-between md:flex-row flex-col-reverse gap-y-10">
-        <div class="md:w-1/2 w-full">
-          <h1 class="font-bold text-4xl">Кроссовки известных брендов</h1>
-          <p class="mt-3 mb-13">
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col-reverse lg:flex-row items-center gap-12">
+        <!-- Text Block -->
+        <div class="w-full lg:w-1/2">
+          <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+            Кроссовки известных брендов
+          </h1>
+          <p class="text-gray-700 mb-6 leading-relaxed">
             Мы продаем кроссовки брендов Nike, Adidas, Puma, Reebok, Converse и многие другие по
-            низким ценам
+            низким ценам.
           </p>
           <NuxtLink
             to="/sneakers"
-            class="bg-blue-950 text-white px-10 py-3 rounded hover:bg-blue-800 transition"
-            >Перейти к покупкам</NuxtLink
+            class="inline-block bg-blue-600 text-white text-lg font-medium px-8 py-3 rounded-lg hover:bg-blue-700 transition"
           >
+            Перейти к покупкам
+          </NuxtLink>
         </div>
         <Carousel
           :autoplay="4000"
@@ -81,26 +85,45 @@ const brands = [
       </div>
     </div>
   </section>
-  <section class="my-20">
-    <div class="container">
-      <h1 class="font-bold text-center text-4xl mb-20">Бренды</h1>
-      <div class="flex justify-between items-center">
-        <Carousel :wrap-around="true" :gap="50" itemsToShow="auto" class="w-full">
-          <Slide v-for="(brand, i) in brands" :key="i">
-            <NuxtLink :to="`/brands/${brand.name}`" class="w-60 h-40 flex justify-center">
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-center text-gray-900 mb-12">Бренды</h2>
+      <Carousel :wrap-around="true" :gap="32" itemsToShow="auto" class="relative">
+        <Slide v-for="(brand, i) in brands" :key="i">
+          <div class="flex justify-center items-center p-4">
+            <NuxtLink
+              :to="`/brands/${brand.name}`"
+              class="flex justify-center items-center w-40 h-40 bg-white rounded-lg shadow hover:shadow-lg transition"
+            >
               <NuxtImg
                 :src="brand.logo"
-                class="w-32 h-32 object-contain rounded-lg"
+                alt="Brand Logo"
+                class="w-28 h-28 object-contain"
                 loading="lazy"
               />
             </NuxtLink>
-          </Slide>
-          <template #addons>
-            <CarouselNavigation />
-            <Pagination />
-          </template>
-        </Carousel>
-      </div>
+          </div>
+        </Slide>
+        <template #addons>
+          <CarouselNavigation>
+            <template #prev>
+              <span
+                class="left-2 top-1/2 h-10 w-10 flex justify-center items-center transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
+              >
+                <Icon name="lucide:chevron-left" class="w-6 h-6 text-gray-800" />
+              </span>
+            </template>
+            <template #next>
+              <span
+                class="right-2 top-1/2 h-10 w-10 flex justify-center items-center transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
+              >
+                <Icon name="lucide:chevron-right" class="w-6 h-6 text-gray-800" />
+              </span>
+            </template>
+          </CarouselNavigation>
+          <Pagination class="mt-8" />
+        </template>
+      </Carousel>
     </div>
   </section>
   <section class="my-40">
@@ -115,22 +138,22 @@ const brands = [
           class="w-full"
           snapAlign="start"
         >
-          <Slide v-for="(snake, i) in snakers" :key="snake.id">
+          <Slide v-for="(snake, i) in snakers" :key="i">
             <CartItems
               :image="snake.image"
               :id="snake.id"
               :title="snake.title"
               :price="snake.price"
+              :sizes="snake.sizes"
             />
           </Slide>
           <template #addons>
             <CarouselNavigation class="items">
               <template #prev>
                 <button
-                  type="button"
                   class="bg-white px-2 h-10 w-10 flex justify-center items-center rounded-full shadow hover:bg-gray-100 transition"
                 >
-                  <Icon name="lucide:chevron-left" class="w-6 h-6" />
+                  <Icon name="lucide:chevron-left" class="w-6 h-6 text-gray-800" />
                 </button>
               </template>
               <template #next>
@@ -139,7 +162,7 @@ const brands = [
                   class="bg-white px-2 h-10 w-10 flex justify-center items-center rounded-full shadow hover:bg-gray-100 transition"
                 >
                   <Icon name="lucide:chevron-right" class="w-8 h-8" />
-                </span>
+                </button>
               </template>
             </CarouselNavigation>
             <Pagination />
@@ -171,7 +194,7 @@ const brands = [
 .items.carousel__next,
 .items.carousel__prev {
   position: absolute;
-  top: -20px;
+  top: -25px;
 }
 .items.carousel__next {
   left: 55px;

@@ -52,6 +52,6 @@ const cart = useCartShop();
         </div>
       </div>
     </div>
-    <div class="px-5 mt-4" v-else>пока корзина пуста</div>
+    <!-- <div class="px-5 mt-4" v-else>пока корзина пуста</div> -->
   </article>
 </template>

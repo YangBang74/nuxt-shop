@@ -13,12 +13,15 @@ withDefaults(
   }
 );
 </script>
+
 <template>
-  <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition p-4 flex flex-col">
+  <div
+    class="bg-white rounded-lg border border-black/15 shadow-md hover:shadow-lg transition p-4 flex flex-col"
+  >
     <NuxtImg
       :src="image"
       alt="Sneaker Image"
-      class="object-cover h-56 w-56 rounded-md mb-4"
+      class="h-56 w-56 object-cover rounded-md mb-4"
       loading="lazy"
     />
     <div class="flex-1 flex flex-col justify-between">
@@ -41,3 +44,13 @@ withDefaults(
     </div>
   </div>
 </template>
+
+<style scoped>
+/* line-clamp для переноса длинного заголовка */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

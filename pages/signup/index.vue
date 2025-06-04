@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { signUp } from '@/services/set/signUp';
 import { useUserStore } from '~/stores/user';
+import { useRouter } from 'vue-router';
 
 definePageMeta({
-  title: 'Регистрация - Nuxt Shop',
+  title: 'Регистрация — Nuxt Shop',
   layout: 'auth',
 });
 
 const user = useUserStore();
+const router = useRouter();
+
+const name = ref('');
+const mail = ref('');
+const pass = ref('');
+const error = ref('');
 
 const registerFunction = async (event: Event) => {
   event.preventDefault();
@@ -18,47 +26,71 @@ const registerFunction = async (event: Event) => {
       error.value = data;
       return;
     }
-    console.log(data);
     user.setUser(data.data.fullName, data.data.email, data.token);
-    navigateTo('/');
+    await router.push('/');
   } catch (err: any) {
     console.error(err);
     error.value = 'Непредвиденная ошибка при регистрации';
   }
 };
-
-const name = ref('');
-const mail = ref('');
-const pass = ref('');
-const error = ref('');
 </script>
 
 <template>
-  <section class="my-20">
-    <div class="container">
-      <div class="max-w-150 mx-auto">
-        <h1 class="font-bold text-4xl">Регистрация</h1>
-        <p class="text-gray-800 mt-5">Введите свои данные для регистрации</p>
-        <p v-if="error" class="text-red-500 font-bold">{{ error }}</p>
-        <form class="my-20 flex gap-5 flex-wrap" @submit="registerFunction">
-          <InputSign label="Полное имя" type="text" name="fullName" v-model="name" />
-          <InputSign label="Электронная почта" type="email" name="email" v-model="mail" />
-          <InputSign label="Пароль" type="password" name="password" v-model="pass" />
-          <div class="flex items-center gap-1 w-full">
-            <input type="checkbox" name="check" required />
-            <label for="check">Принять правила соглашения</label>
+  <section
+    class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 min-h-screen"
+  >
+    <div class="max-w-md w-full space-y-8">
+      <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+        <h1 class="text-center text-3xl font-extrabold text-gray-900">Регистрация</h1>
+        <p class="mt-2 text-center text-sm text-gray-600">Введите свои данные для регистрации</p>
+        <p v-if="error" class="mt-4 text-center text-red-500 font-medium">
+          {{ error }}
+        </p>
+        <form class="mt-8 space-y-6" @submit="registerFunction">
+          <div class="space-y-4">
+            <div>
+              <InputSign label="Полное имя" type="text" name="fullName" v-model="name" />
+            </div>
+            <div>
+              <InputSign label="Электронная почта" type="email" name="email" v-model="mail" />
+            </div>
+            <div>
+              <InputSign label="Пароль" type="password" name="password" v-model="pass" />
+            </div>
+            <div class="flex items-center">
+              <input
+                id="terms"
+                type="checkbox"
+                required
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label for="terms" class="ml-2 block text-sm text-gray-700">
+                Принять правила соглашения
+              </label>
+            </div>
           </div>
-          <button
-            type="submit"
-            class="block py-3 bg-blue-400 text-white rounded font-bold w-full mt-5"
-          >
-            Регистрироваться
-          </button>
-          <div class="mx-auto my-5">
-            У вас есть аккаунт? <NuxtLink to="signIn" class="text-blue-500">войти</NuxtLink>
+
+          <div>
+            <button
+              type="submit"
+              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
+            >
+              Зарегистрироваться
+            </button>
+          </div>
+
+          <div class="text-sm text-center">
+            <span class="text-gray-600">У вас есть аккаунт?</span>
+            <NuxtLink to="/signIn" class="font-medium text-blue-600 hover:text-blue-800 ml-1">
+              Войти
+            </NuxtLink>
           </div>
         </form>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Все стили заданы через TailwindCSS */
+</style>

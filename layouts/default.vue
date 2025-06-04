@@ -38,7 +38,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
       >
         <div class="container mx-auto">
           <div class="flex justify-between items-center gap-5 relative">
-            <NuxtLink to="/" class="font-bold py-3">En.Shop</NuxtLink>
+            <NuxtLink to="/" class="font-bold">
+              <Logo class="text-white h-12 w-40" />
+            </NuxtLink>
             <HeaderSearch />
             <div class="flex items-center gap-4">
               <button type="button">
