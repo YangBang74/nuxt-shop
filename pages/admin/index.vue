@@ -51,63 +51,55 @@ watch(addIsActive, (now) => {
       </div>
     </header>
     <main class="flex-1 w-full flex h-full">
-      <div class="flex h-full">
-        <aside class="flex flex-col text-white bg-black/70 h-full w-65 gap-3 py-3 pr-5">
-          <button
-            type="button"
-            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
-            @click="setModule('home')"
-            :class="{ 'bg-white text-black/70': activeModule === 'home' }"
-          >
-            <Icon name="fa6-solid:house" size="20" />
-            Главная
-          </button>
-          <button
-            type="button"
-            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
-            @click="setModule('add')"
-            :class="{ 'bg-white text-black/70': activeModule === 'add' }"
-          >
-            <Icon name="fa6-solid:circle-plus" size="20" />
-            Добавить новый
-          </button>
-          <button
-            type="button"
-            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
-            @click="setModule('change')"
-            :class="{ 'bg-white text-black/70': activeModule === 'change' }"
-          >
-            <Icon name="mdi:pencil" class="w-5 h-5" />
-            Изменить товар
-          </button>
-        </aside>
-      </div>
-      <div class="h-full">
-        <div v-if="activeModule === 'home'">
-          <div class="flex justify-start gap-5 items-start flex-wrap p-5">
-            <CartItems
-              v-for="(item, i) in sneakers"
-              :key="i"
-              :title="item.title"
-              :image="item.image"
-              :price="item.price"
-              :id="item.id"
-              link="admin/change"
-            />
-          </div>
+      <aside class="flex flex-col text-white bg-black/70 h-full w-65 gap-3 py-3 pr-5">
+        <button
+          type="button"
+          class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+          @click="setModule('home')"
+          :class="{ 'bg-white text-black/70': activeModule === 'home' }"
+        >
+          <Icon name="fa6-solid:house" size="20" />
+          Главная
+        </button>
+        <button
+          type="button"
+          class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+          @click="setModule('add')"
+          :class="{ 'bg-white text-black/70': activeModule === 'add' }"
+        >
+          <Icon name="fa6-solid:circle-plus" size="20" />
+          Добавить новый
+        </button>
+        <button
+          type="button"
+          class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+          @click="setModule('change')"
+          :class="{ 'bg-white text-black/70': activeModule === 'change' }"
+        >
+          <Icon name="mdi:pencil" class="w-5 h-5" />
+          Изменить товар
+        </button>
+      </aside>
+      <div v-if="activeModule === 'home'">
+        <div class="flex justify-start gap-5 items-start flex-wrap p-5">
+          <CartItems v-for="(item, i) in sneakers" :key="i" :item="item" />
         </div>
-        <PostNewItem v-if="activeModule === 'add'" @close="setModule('home')" />
-        <div v-if="activeModule === 'change'">
-          <div class="flex flex-col py-5 gap-3">
-            <ChangeCart
-              v-for="(item, i) in sneakers"
-              :key="i"
-              :title="item.title"
-              :price="item.price"
-              :rating="item.rating"
-              :image="item.image"
-            />
-          </div>
+      </div>
+      <PostNewItem v-if="activeModule === 'add'" @close="setModule('home')" />
+      <div v-if="activeModule === 'change'">
+        <div class="flex flex-col py-5 gap-3">
+          <ChangeCart
+            v-for="(item, i) in sneakers"
+            :key="i"
+            :title="item.title"
+            :price="item.price"
+            :rating="item.rating"
+            :image="item.image"
+            :sizes="item.sizes"
+            :styles="item.styles"
+            :brand="item.brand"
+            :id="item.id"
+          />
         </div>
       </div>
     </main>

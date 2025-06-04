@@ -34,9 +34,7 @@ onMounted(fetchData);
         <CartItems
           v-for="snake in snakers"
           :key="snake.id"
-          :image="snake.image"
-          :title="snake.title"
-          :price="snake.price"
+          :item="snake"
         />
       </div>
     </div>

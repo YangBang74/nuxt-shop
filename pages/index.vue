@@ -140,11 +140,7 @@ const brands = [
         >
           <Slide v-for="(snake, i) in snakers" :key="i">
             <CartItems
-              :image="snake.image"
-              :id="snake.id"
-              :title="snake.title"
-              :price="snake.price"
-              :sizes="snake.sizes"
+              :item="snake"
             />
           </Slide>
           <template #addons>

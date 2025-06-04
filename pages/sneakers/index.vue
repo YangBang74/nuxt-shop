@@ -55,10 +55,7 @@ watch(
           <CartItems
             v-for="(sneak, i) of sneakers"
             :key="i"
-            :id="sneak.id"
-            :image="sneak.image"
-            :title="sneak.title"
-            :price="sneak.price"
+            :item="sneak"
           />
         </div>
       </div>
