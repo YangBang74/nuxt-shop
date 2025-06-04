@@ -37,7 +37,7 @@ const message = () => {
   if (!messageIsActive) {
     messageIsActive.value = true;
     setTimeout(() => {
-      messageIsActive = false;
+      messageIsActive.value = false;
     }, 2000);
   } else {
     messageIsActive.value = false;
@@ -73,15 +73,7 @@ const addItem = (event: Event) => {
 </script>
 
 <template>
-  <article class="p-5 px-10 rounded-sm max-w-400 mx-auto">
-    <button
-      type="button"
-      class="absolute right-4 top-4 hover:text-red-500"
-      aria-label="Закрыть"
-      @click="emit('close')"
-    >
-      <Icon name="heroicons:x-mark" size="24" />
-    </button>
+  <article class="p-5 px-10 rounded-sm max-w-150 mx-auto">
     <h1 class="font-bold text-lg mb-4 text-center">Добавить новый товар</h1>
     <form class="flex flex-col gap-4" @submit="addItem">
       <InputSign label="Название товара" v-model="cartName" type="text" name="cartName" />
@@ -124,20 +116,23 @@ const addItem = (event: Event) => {
     </form>
   </article>
   <Teleport to="body">
-    <div
-      class="w-full h-full left-0 top-0 bg-black/80 justify-center items-center overflow-auto"
-      :class="messageIsActive ? 'flex' : 'hidden'"
-    >
-      <div class="bg-white py-5 px-10 rounded-lg font-medium">
-        <p>Товар успешно добавлен</p>
-        <button
-          @click="message()"
-          type="button"
-          class="bg-green-500 rounded-sm text-white block py-1 w-full mt-5"
-        >
-          хорошо
-        </button>
+    <Transition name="modal">
+      <div
+        class="w-full h-full left-0 top-0 bg-black/80 justify-center items-center overflow-auto"
+        :class="messageIsActive ? 'flex' : 'hidden'"
+      >
+        <div class="bg-white py-5 px-10 rounded-lg font-medium">
+          <p>Товар успешно добавлен</p>
+          <button
+            @click="message()"
+            type="button"
+            class="bg-green-500 rounded-sm text-white block py-1 w-full mt-5"
+          >
+            хорошо
+          </button>
+        </div>
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>
+<style scoped></style>

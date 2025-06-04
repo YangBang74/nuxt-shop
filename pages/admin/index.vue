@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
 import getSneakers from '@/services/get/getSneakers';
-import CartItems from '@/components/CartItems.vue';
 
-interface Sneaker {
-  id: string;
-  title: string;
-  image: string;
-  price: number;
-}
+definePageMeta({
+  layout: 'auth',
+});
 
-const sneakers = ref<Sneaker[]>([]);
+const activeModule = useCookie<'home' | 'add' | 'change'>('activeModule', {
+  default: () => 'home',
+});
+
+const addIsActive = computed(() => activeModule.value === 'add');
+const changeIsActive = computed(() => activeModule.value === 'change');
+
+const setModule = (module: 'home' | 'add' | 'change') => {
+  activeModule.value = module;
+};
+
+const sneakers = ref([]);
 const loading = ref(false);
-const errorMsg = ref<string | null>(null);
-const addIsActive = ref<boolean>(false);
-
 const fetchSneakersList = async () => {
   loading.value = true;
-  errorMsg.value = null;
-
   try {
     const data = await getSneakers();
     sneakers.value = data;
   } catch (err: any) {
-    errorMsg.value = err?.message || 'Ошибка при получении данных';
+    return err?.message || 'Ошибка при получении данных';
   } finally {
     loading.value = false;
   }
 };
-
 onMounted(() => {
   fetchSneakersList();
 });
@@ -37,9 +37,6 @@ watch(addIsActive, (now) => {
   if (!now) {
     fetchSneakersList();
   }
-});
-definePageMeta({
-  layout: 'auth',
 });
 </script>
 
@@ -53,62 +50,66 @@ definePageMeta({
         </div>
       </div>
     </header>
-    <main class="flex-1 w-full flex overflow-hidden">
-      <aside class="flex flex-col text-white bg-black/70 h-full max-w-[250px] gap-3 py-3 px-2">
-        <button
-          type="button"
-          class="flex items-center w-full py-2 px-4 gap-3 rounded-r-2xl transition-colors duration-150"
-          @click="addIsActive = false"
-          :class="{
-            'bg-white text-black/70': !addIsActive,
-            'hover:bg-white hover:text-black/70': addIsActive,
-          }"
-        >
-          <Icon name="fa6-solid:house" size="20" />
-          <span>Главная</span>
-        </button>
-
-        <!-- Кнопка "Добавить новый" -->
-        <button
-          type="button"
-          class="flex items-center w-full py-2 px-4 gap-3 rounded-r-2xl transition-colors duration-150"
-          @click="addIsActive = true"
-          :class="{
-            'bg-white text-black/70': addIsActive,
-            'hover:bg-white hover:text-black/70': !addIsActive,
-          }"
-        >
-          <Icon name="fa6-solid:circle-plus" size="20" />
-          <span>Добавить новый</span>
-        </button>
-
-        <!-- Кнопка "Изменить товар" (пример, сейчас просто пустая) -->
-        <button
-          type="button"
-          class="flex items-center w-full py-2 px-4 gap-3 rounded-r-2xl hover:bg-white hover:text-black/70 transition-colors duration-150"
-        >
-          <Icon name="mdi:pencil" class="w-5 h-5" />
-          <span>Изменить товар</span>
-        </button>
-      </aside>
-      <section class="flex-1 overflow-auto">
-        <div v-if="!addIsActive" class="p-5">
-          <div v-if="loading" class="text-center text-gray-500">Загрузка...</div>
-          <div v-else-if="errorMsg" class="text-center text-red-500">{{ errorMsg }}</div>
-          <div v-else class="flex flex-wrap gap-5">
+    <main class="flex-1 w-full flex h-full">
+      <div class="flex h-full">
+        <aside class="flex flex-col text-white bg-black/70 h-full w-65 gap-3 py-3 pr-5">
+          <button
+            type="button"
+            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+            @click="setModule('home')"
+            :class="{ 'bg-white text-black/70': activeModule === 'home' }"
+          >
+            <Icon name="fa6-solid:house" size="20" />
+            Главная
+          </button>
+          <button
+            type="button"
+            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+            @click="setModule('add')"
+            :class="{ 'bg-white text-black/70': activeModule === 'add' }"
+          >
+            <Icon name="fa6-solid:circle-plus" size="20" />
+            Добавить новый
+          </button>
+          <button
+            type="button"
+            class="flex items-center py-2 pl-10 pr-7 gap-3 rounded-r-2xl"
+            @click="setModule('change')"
+            :class="{ 'bg-white text-black/70': activeModule === 'change' }"
+          >
+            <Icon name="mdi:pencil" class="w-5 h-5" />
+            Изменить товар
+          </button>
+        </aside>
+      </div>
+      <div class="h-full">
+        <div v-if="activeModule === 'home'">
+          <div class="flex justify-start gap-5 items-start flex-wrap p-5">
             <CartItems
-              v-for="item in sneakers"
-              :key="item.id"
+              v-for="(item, i) in sneakers"
+              :key="i"
               :title="item.title"
               :image="item.image"
               :price="item.price"
+              :id="item.id"
+              link="admin/change"
             />
           </div>
         </div>
-        <div v-else>
-          <PostNewItem @close="addIsActive = false" />
+        <PostNewItem v-if="activeModule === 'add'" @close="setModule('home')" />
+        <div v-if="activeModule === 'change'">
+          <div class="flex flex-col py-5 gap-3">
+            <ChangeCart
+              v-for="(item, i) in sneakers"
+              :key="i"
+              :title="item.title"
+              :price="item.price"
+              :rating="item.rating"
+              :image="item.image"
+            />
+          </div>
         </div>
-      </section>
+      </div>
     </main>
     <footer class="bg-black text-white text-center">Footer</footer>
   </div>
