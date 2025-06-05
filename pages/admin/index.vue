@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import getSneakers from '@/services/get/getSneakers';
+import { useUserStore } from '#imports';
 
 definePageMeta({
   layout: 'auth',
+  middleware: 'auth',
 });
 
 const activeModule = useCookie<'home' | 'add' | 'change'>('activeModule', {
@@ -84,23 +86,15 @@ watch(addIsActive, (now) => {
         </button>
       </aside>
       <div class="flex-1">
-        <div v-if="activeModule === 'home'" class="p-5 flex flex-wrap gap-5 items-start">
+        <div
+          v-if="activeModule === 'home'"
+          class="p-5 flex flex-wrap gap-5 items-start justify-center mx-auto"
+        >
           <CartItems v-for="(item, i) in sneakers" :key="i" :item="item" />
         </div>
         <PostNewItem v-if="activeModule === 'add'" @close="setModule('home')" />
         <div v-if="activeModule === 'change'" class="py-5 flex flex-col gap-3">
-          <ChangeCart
-            v-for="(item, i) in sneakers"
-            :key="i"
-            :title="item.title"
-            :price="item.price"
-            :rating="item.rating"
-            :image="item.image"
-            :sizes="item.sizes"
-            :styles="item.styles"
-            :brand="item.brand"
-            :id="item.id"
-          />
+          <ChangeCart v-for="(item, i) in sneakers" :key="i" :item="item" />
         </div>
       </div>
     </main>

@@ -12,7 +12,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col mb-6">
+  <div class="flex flex-col">
     <label :for="name" class="mb-2 text-gray-700 font-medium">
       {{ label }}
     </label>

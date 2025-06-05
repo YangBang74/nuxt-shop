@@ -73,66 +73,97 @@ const addItem = (event: Event) => {
 </script>
 
 <template>
-  <article class="p-5 px-10 rounded-sm max-w-150 mx-auto h-full relative">
-    <h1 class="font-bold text-lg mb-4 text-center">Добавить новый товар</h1>
-    <form class="flex flex-col" @submit="addItem">
+  <article class="p-6 sm:p-10 bg-white shadow-xl rounded-xl max-w-150 my-10 mx-auto">
+    <h1 class="font-bold text-2xl mb-6 text-center text-gray-800">Добавить новый товар</h1>
+    <form class="flex flex-col gap-4" @submit="addItem">
       <InputSign label="Название товара" v-model="cartName" type="text" name="cartName" />
-      <InputSign label="Цена" v-model="cartPrice" type="text" name="cartPrice" />
+      <InputSign label="Цена" v-model="cartPrice" type="number" name="cartPrice" />
       <InputSign label="Бренд" v-model="cartBrand" type="text" name="cartBrand" />
       <InputSign label="Ссылка на изображение" v-model="cartImage" type="text" name="cartImage" />
+
       <div>
-        <p class="text-gray-900 mb-2">Размер</p>
+        <p class="text-gray-700 mb-2 font-medium">Размер</p>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="(size, i) in sizes"
             :key="i"
             type="button"
-            class="w-8 h-8 border border-gray-400 flex items-center justify-center rounded"
+            class="w-10 h-10 border rounded-full flex items-center justify-center text-sm transition-all duration-200 ease-in-out"
+            :class="
+              cartSizes.includes(size)
+                ? 'bg-green-600 text-white border-green-600 shadow'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+            "
             @click="selectSize(size)"
-            :class="cartSizes.includes(size) ? 'bg-green-500 text-white' : ''"
           >
             {{ size }}
           </button>
         </div>
       </div>
+
       <div>
-        <p class="text-gray-900 mb-2">Стили</p>
+        <p class="text-gray-700 mb-2 font-medium">Стили</p>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="(style, i) in styles"
             :key="i"
             type="button"
-            class="px-3 py-1 border border-gray-400 rounded"
+            class="px-4 py-1.5 rounded-full text-sm transition-all duration-200 ease-in-out"
+            :class="
+              cartStyles.includes(style)
+                ? 'bg-green-600 text-white shadow'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            "
             @click="selectStyles(style)"
-            :class="cartStyles.includes(style) ? 'bg-green-500 text-white' : ''"
           >
             {{ style }}
           </button>
         </div>
       </div>
-      <button type="submit" class="mt-4 bg-green-600 text-white py-2 rounded hover:bg-green-700">
+
+      <button
+        type="submit"
+        class="mt-6 bg-green-600 text-white py-2.5 rounded-lg text-lg font-medium hover:bg-green-700 transition-all"
+      >
         Добавить товар
       </button>
     </form>
   </article>
+
+  <!-- Сообщение об успешном добавлении -->
   <Teleport to="body">
-    <Transition name="modal">
+    <Transition name="fade">
       <div
-        class="w-full h-full left-0 top-0 bg-black/80 justify-center items-center overflow-auto"
-        :class="messageIsActive ? 'flex' : 'hidden'"
+        v-if="messageIsActive"
+        class="fixed inset-0 bg-black/60 flex justify-center items-center z-50"
       >
-        <div class="bg-white py-5 px-10 rounded-lg font-medium">
-          <p>Товар успешно добавлен</p>
+        <div class="bg-white rounded-xl p-6 w-80 text-center shadow-lg animate-fade-in">
+          <p class="text-lg font-semibold text-gray-800">Товар успешно добавлен!</p>
           <button
-            @click="message()"
-            type="button"
-            class="bg-green-500 rounded-sm text-white block py-1 w-full mt-5"
+            @click="message"
+            class="mt-4 bg-green-600 text-white w-full py-2 rounded hover:bg-green-700 transition"
           >
-            хорошо
+            Хорошо
           </button>
         </div>
       </div>
     </Transition>
   </Teleport>
 </template>
-<style scoped></style>
+
+<style scoped>
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+</style>

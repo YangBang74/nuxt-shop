@@ -8,7 +8,7 @@ const route = useRoute();
 
 const cart = useCartShop();
 const modalIsActive = ref<boolean>(false);
-
+const modalState = ref<boolean>(false);
 const showBlackBar = ref(true);
 let lastScrollY = 0;
 const delta = 10;
@@ -44,7 +44,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
             <HeaderSearch />
             <div class="flex items-center gap-4">
               <button type="button">
-                <NuxtLink to="/signIn" v-if="user.token === null">
+                <NuxtLink to="/signIn" v-if="user.fullName === null">
                   <Icon name="mdi:account" size="27" />
                 </NuxtLink>
                 <NuxtLink to="/profile" v-else>

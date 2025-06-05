@@ -25,7 +25,7 @@ const registerFunction = async (event: Event) => {
       error.value = data;
       return;
     }
-    user.setUser(data.data.fullName, data.data.email, data.token);
+    user.setUser(data.data.fullName, data.data.email, data.token, data.data.role);
     // Можно добавить редирект после успешного входа
     await router.push('/');
   } catch (err: any) {
@@ -76,7 +76,3 @@ const registerFunction = async (event: Event) => {
     </div>
   </section>
 </template>
-
-<style scoped>
-/* Никаких дополнительных стилей: всё реализовано через TailwindCSS */
-</style>
