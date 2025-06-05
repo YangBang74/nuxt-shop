@@ -18,6 +18,10 @@ const resetValues = () => {
   modelValue.value.selectStyle = null;
   modelValue.value.selectBrand = null;
 };
+
+function selectItem<T extends keyof typeof modelValue.value>(item: any, field: T) {
+  modelValue.value[field] = modelValue.value[field] === item ? null : item;
+}
 </script>
 
 <template>
@@ -47,7 +51,7 @@ const resetValues = () => {
           v-for="(size, i) in sizes"
           :key="i"
           type="button"
-          @click="modelValue.selectSize = size"
+          @click="selectItem(size, 'selectSize')"
           :class="[
             'px-2 py-1 border rounded-md text-sm font-medium transition',
             modelValue.selectSize === size
@@ -66,7 +70,7 @@ const resetValues = () => {
           v-for="(style, i) in styles"
           :key="i"
           type="button"
-          @click="modelValue.selectStyle = style"
+          @click="selectItem(style, 'selectStyle')"
           :class="[
             'px-3 py-1 border rounded-md text-sm font-medium transition capitalize',
             modelValue.selectStyle === style
@@ -85,7 +89,7 @@ const resetValues = () => {
           v-for="(brand, i) in brands"
           :key="i"
           type="button"
-          @click="modelValue.selectBrand = brand"
+          @click="selectItem(brand, 'selectBrand')"
           :class="[
             'px-3 py-1 border rounded-md text-sm font-medium transition capitalize',
             modelValue.selectBrand === brand

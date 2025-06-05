@@ -5,6 +5,12 @@ definePageMeta({
   layout: 'default',
 });
 
+useSeoMeta({
+  title: 'Каталог товаров - YangShop',
+  description: 'Добро пожаловать в наш магазин!',
+  ogTitle: 'Home Page – My Shop',
+});
+
 const sneakers = ref([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -51,12 +57,8 @@ watch(
     <div class="container">
       <div class="flex justify-between gap-5 my-10 items-start">
         <Filter class="w-80" v-model="filters" />
-        <div class="flex justify-start items-start gap-5 w-full">
-          <CartItems
-            v-for="(sneak, i) of sneakers"
-            :key="i"
-            :item="sneak"
-          />
+        <div class="flex justify-start items-start gap-5 w-full flex-wrap">
+          <CartItems v-for="(sneak, i) of sneakers" :key="i" :item="sneak" />
         </div>
       </div>
     </div>

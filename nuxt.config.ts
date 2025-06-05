@@ -16,11 +16,15 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
   ],
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/public/favicon.svg' }],
+    },
+  },
   runtimeConfig: {
     TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
   },
-
   fonts: {
     families: [{ name: 'Montserrat', provider: 'google' }],
   },

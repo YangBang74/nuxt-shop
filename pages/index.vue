@@ -6,14 +6,10 @@ import { useUserStore } from '#imports';
 
 const user = useUserStore();
 
-definePageMeta({
-  layout: 'default',
-  title: 'Home Page',
-  meta: [
-    { name: 'description', content: 'Добро пожаловать в наш магазин!' },
-    { property: 'og:title', content: 'Home Page – My Shop' },
-    { property: 'og:image', content: '/og-image-home.png' },
-  ],
+useSeoMeta({
+  title: 'YangShop',
+  description: 'Добро пожаловать в наш магазин!',
+  ogTitle: 'Home Page – My Shop',
 });
 
 const snakers = ref([]);
@@ -50,7 +46,6 @@ const brands = [
   <section class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="flex flex-col-reverse lg:flex-row items-center gap-12">
-        <!-- Text Block -->
         <div class="w-full lg:w-1/2">
           <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
             Кроссовки известных брендов
@@ -139,9 +134,7 @@ const brands = [
           snapAlign="start"
         >
           <Slide v-for="(snake, i) in snakers" :key="i">
-            <CartItems
-              :item="snake"
-            />
+            <CartItems :item="snake" />
           </Slide>
           <template #addons>
             <CarouselNavigation class="items">

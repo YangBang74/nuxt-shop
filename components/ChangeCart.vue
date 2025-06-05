@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { updateSneaker } from '~/services/set/changeSneake';
 const props = defineProps<{
   item: string[];

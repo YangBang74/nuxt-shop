@@ -1,3 +1,8 @@
+<script setup>
+import { useSearch } from '@/composables/useSearch';
+const { query, submit } = useSearch();
+</script>
+
 <template>
   <div class="flex items-center relative flex-1/2 max-w-150">
     <input
@@ -17,8 +22,3 @@
     </button>
   </div>
 </template>
-
-<script setup>
-import { useSearch } from '@/composables/useSearch';
-const { query, submit } = useSearch();
-</script>

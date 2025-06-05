@@ -61,14 +61,10 @@ ${cartToString()}`;
 <template>
   <section class="py-16 bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4">
-      <!-- Если корзина пуста -->
       <div v-if="cart.sneakers.length === 0" class="flex justify-center items-center py-20">
         <p class="text-xl text-gray-600 font-medium">Ваша корзина пуста</p>
       </div>
-
-      <!-- Форма и список товаров -->
       <div v-else class="flex flex-col lg:flex-row gap-12">
-        <!-- Форма заказа -->
         <form
           @submit.prevent="submitOrder"
           class="w-full lg:w-1/2 bg-white rounded-lg shadow-md p-6 space-y-6"

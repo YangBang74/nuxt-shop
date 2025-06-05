@@ -44,7 +44,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
             <HeaderSearch />
             <div class="flex items-center gap-4">
               <button type="button">
-                <NuxtLink to="/signUp" v-if="user.token === null">
+                <NuxtLink to="/signIn" v-if="user.token === null">
                   <Icon name="mdi:account" size="27" />
                 </NuxtLink>
                 <NuxtLink to="/profile" v-else>
@@ -73,18 +73,12 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
           </div>
         </div>
       </div>
-      <div class="bg-blue-950 text-white pt-13.5">
+      <div class="bg-black/60 text-white pt-13.5">
         <div class="container">
           <nav class="flex gap-10">
-            <NuxtLink to="/" class="py-3 text-gray-300 hover:text-white transition">
-              Главная
-            </NuxtLink>
-            <NuxtLink to="/sneakers" class="py-3 text-gray-300 hover:text-white transition">
-              Каталог
-            </NuxtLink>
-            <NuxtLink to="/about" class="py-3 text-gray-300 hover:text-white transition">
-              О нас
-            </NuxtLink>
+            <NuxtLink to="/" class="py-3 transition"> Главная </NuxtLink>
+            <NuxtLink to="/sneakers" class="py-3 transition"> Каталог </NuxtLink>
+            <NuxtLink to="/about" class="py-3 transition"> О нас </NuxtLink>
           </nav>
         </div>
       </div>
