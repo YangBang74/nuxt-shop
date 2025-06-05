@@ -2,7 +2,7 @@
 withDefaults(
   defineProps<{
     link?: string;
-    item: any[];
+    item: Array<any>;
   }>(),
   {
     link: 'sneakers',

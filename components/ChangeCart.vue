@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { updateSneaker } from '~/services/set/changeSneake';
 const props = defineProps<{
-  item: string[];
+  item: Array<any>;
 }>();
 
 const isEditing = ref(false);
 const isSaving = ref(false);
 const saveStatus = ref<'idle' | 'saving' | 'saved' | 'error'>('idle');
-
 const currentTitle = ref(props.item.title);
 const currentBrand = ref(props.item.brand);
 const currentPrice = ref(props.item.price);
@@ -78,7 +77,8 @@ const saveChanges = async () => {
 </script>
 
 <template>
-  <div class="px-5">
+  <div v-if="!item"><NewLoader /></div>
+  <div class="px-5" v-else>
     <div
       class="flex flex-col sm:flex-row justify-center sm:items-center sm:justify-between gap-4 border p-4 rounded-lg shadow-sm w-full bg-white hover:shadow-md transition-all"
     >
