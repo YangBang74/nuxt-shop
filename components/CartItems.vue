@@ -12,12 +12,12 @@ withDefaults(
 
 <template>
   <div
-    class="bg-white rounded-lg border border-black/15 shadow-md hover:shadow-lg transition p-4 flex flex-col"
+    class="bg-white w-70 h-90 rounded-lg border border-black/15 shadow-md hover:shadow-lg transition p-4 flex flex-col"
   >
     <NuxtImg
       :src="item.image"
       alt="Sneaker Image"
-      class="h-56 w-56 object-cover rounded-md mb-4"
+      class="h-50 w-50 object-contain rounded-md mb-4 mx-auto"
       loading="lazy"
     />
     <div class="flex-1 flex flex-col justify-between">

@@ -3,8 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCartShop } from '~/stores/cart';
 import Rating from '~/components/Rating.vue';
-import ButtonLoader from '~/components/UI/ButtonLoader.vue';
 import OkButton from '~/components/UI/OkButton.vue';
+import Loader from '~/components/UI/Loader.vue';
 
 const cart = useCartShop();
 const route = useRoute();
@@ -60,7 +60,10 @@ const addItemCart = async (snake: unknown, price: number | null) => {
 </script>
 
 <template>
-  <section class="py-16 bg-gray-50 min-h-screen">
+  <div class="w-full h-[100vh] flex justify-center items-center" v-if="loading">
+    <Loader />
+  </div>
+  <section class="py-16 bg-gray-50 min-h-screen" v-else>
     <div class="container mx-auto px-4">
       <div v-if="loading" class="flex justify-center items-center py-20">
         <span class="text-gray-500">Загрузка товара...</span>

@@ -1,30 +1,7 @@
-<template>
-  <div class="p-4">
-    <div v-if="error">
-      <h1>Ошибка при загрузке результатов</h1>
-      <p>{{ error }}</p>
-    </div>
-    <div v-else-if="isLoading">
-      <p>Загрузка результатов...</p>
-    </div>
-    <div v-else-if="results.length">
-      <h1>Результаты поиска по «{{ displayQuery }}»</h1>
-      <ul>
-        <li v-for="item in results" :key="item.id">{{ item.title }}</li>
-      </ul>
-    </div>
-    <div v-else-if="displayQuery">
-      <p>По вашему запросу «{{ displayQuery }}» ничего не найдено.</p>
-    </div>
-    <div v-else>
-      <p>Введите поисковый запрос.</p>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useRoute } from '#app';
 import { ref, watchEffect, computed } from 'vue';
+import Loader from '~/components/UI/Loader.vue';
 
 interface SearchResultItem {
   id: number;
@@ -77,3 +54,29 @@ watchEffect(async () => {
   }
 });
 </script>
+<template>
+  <section></section>
+  <div class="p-4">
+    <div v-if="error">
+      <h1>Ошибка при загрузке результатов</h1>
+      <p>{{ error }}</p>
+    </div>
+    <div class="w-full h-[100vh] flex justify-center items-center" v-else-if="isLoading">
+      <Loader />
+    </div>
+    <section v-else-if="results.length">
+      <div class="container">
+        <h1>Результаты поиска по «{{ displayQuery }}»</h1>
+        <div class="flex justify-start items-start gap-5 w-full flex-wrap mt-4">
+          <CartItems v-for="(sneak, i) of results" :key="i" :item="sneak" />
+        </div>
+      </div>
+    </section>
+    <div v-else-if="displayQuery">
+      <p>По вашему запросу «{{ displayQuery }}» ничего не найдено.</p>
+    </div>
+    <div v-else>
+      <p>Введите поисковый запрос.</p>
+    </div>
+  </div>
+</template>
