@@ -88,7 +88,7 @@ const saveChanges = async () => {
           :src="props.item.image"
           alt="Product"
           loading="lazy"
-          class="h-20 w-20 object-cover rounded border"
+          class="h-20 w-20 object-contain rounded border"
         />
         <div
           class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1 overflow-hidden"

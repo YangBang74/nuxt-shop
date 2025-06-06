@@ -138,7 +138,7 @@ const brands = [
             class="w-full"
             snapAlign="start"
           >
-            <Slide v-for="(snake, i) in snakers" :key="i">
+            <Slide v-for="(snake, i) in snakers.slice(0, 10)" :key="i">
               <CartItems :item="snake" />
             </Slide>
             <template #addons>
