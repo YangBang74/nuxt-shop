@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCartShop } from '~/stores/cart';
 import Rating from '~/components/Rating.vue';
+import ButtonLoader from '~/components/UI/ButtonLoader.vue';
+import OkButton from '~/components/UI/OkButton.vue';
 
 const cart = useCartShop();
 const route = useRoute();
@@ -12,7 +14,9 @@ const sneakers = ref<any>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 const selectSize = ref<number | null>(null);
-
+const addLoader = ref<boolean>(false);
+const allGood = ref<boolean>(false);
+const setError = ref<boolean>(false);
 async function fetchData() {
   loading.value = true;
   try {
@@ -31,15 +35,28 @@ async function fetchData() {
 
 onMounted(fetchData);
 
-async function onRatingChange(value: number) {
-  if (!sneakers.value) return;
+// async function onRatingChange(value: number) {
+//   if (!sneakers.value) return;
+//   try {
+//     await updateSneakerRating(sneakers.value.id, value);
+//     sneakers.value.rating = value;
+//   } catch (err) {
+//     console.error('Ошибка при обновлении рейтинга:', err);
+//   }
+// }
+
+const addItemCart = async (snake: unknown, price: number | null) => {
+  addLoader.value = true;
   try {
-    await updateSneakerRating(sneakers.value.id, value);
-    sneakers.value.rating = value;
-  } catch (err) {
-    console.error('Ошибка при обновлении рейтинга:', err);
+    await cart.addToCart(snake, price);
+    allGood.value = true;
+    setTimeout(() => {
+      allGood.value = false;
+    }, 2000);
+  } catch {
+    setError.value = true;
   }
-}
+};
 </script>
 
 <template>
@@ -95,7 +112,7 @@ async function onRatingChange(value: number) {
           <button
             type="button"
             class="w-full py-3 rounded-lg text-white font-semibold transition disabled:bg-gray-400 disabled:cursor-not-allowed text-center bg-green-600 hover:bg-green-700"
-            @click="cart.addToCart(sneakers, selectSize)"
+            @click="addItemCart(sneakers, selectSize)"
             :disabled="!selectSize"
           >
             {{ selectSize ? 'Добавить в корзину' : 'Выберите размер' }}
@@ -104,4 +121,24 @@ async function onRatingChange(value: number) {
       </div>
     </div>
   </section>
+  <Teleport to="body">
+    <div
+      v-if="allGood"
+      class="fixed left-0 top-0 w-full h-full z-100 bg-black/40 flex justify-center items-center"
+    >
+      <div class="bg-white p-10 rounded-lg">
+        <h1 class="font-medium text-lg">Добавлено в корзину</h1>
+        <OkButton class="mt-5" @click="allGood = false" />
+      </div>
+    </div>
+    <div
+      v-if="setError"
+      class="fixed left-0 top-0 w-full h-full z-100 bg-black/40 flex justify-center items-center"
+    >
+      <div class="bg-white p-10 rounded-lg">
+        <h1 class="font-medium text-lg">Что-то пошел не так, попробуйте заново</h1>
+        <OkButton class="mt-5" @click="setError = false" />
+      </div>
+    </div>
+  </Teleport>
 </template>

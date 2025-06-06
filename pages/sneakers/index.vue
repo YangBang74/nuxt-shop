@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getWithFilter } from '~/services/get/filterForSneakers';
-
+import Loader from '~/components/UI/Loader.vue';
 definePageMeta({
   layout: 'default',
 });
@@ -53,11 +53,14 @@ watch(
 );
 </script>
 <template>
-  <section class="my-10">
+  <section class="my-10" >
     <div class="container">
       <div class="flex justify-between gap-5 my-10 items-start">
         <Filter class="w-80" v-model="filters" />
-        <div class="flex justify-start items-start gap-5 w-full flex-wrap">
+        <div class="w-full h-[100vh] flex justify-center items-center" v-if="loading">
+          <Loader />
+        </div>
+        <div class="flex justify-start items-start gap-5 w-full flex-wrap" v-else>
           <CartItems v-for="(sneak, i) of sneakers" :key="i" :item="sneak" />
         </div>
       </div>

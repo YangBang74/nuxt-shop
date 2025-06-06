@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useCartShop } from '~/stores/cart';
 import { sendTelegramMessage } from '~/services/set/sendTelegramBot';
 import ButtonLoader from '~/components/UI/ButtonLoader.vue';
+import OkButton from '~/components/UI/OkButton.vue';
 
 const cart = useCartShop();
 const name = ref('');
@@ -12,6 +13,7 @@ const address = ref('');
 const details = ref('');
 const sumPrice = ref<number>(0);
 const buttonLoader = ref<boolean>(false);
+const allGood = ref<boolean>(false);
 
 function cartToString() {
   if (!cart.sneakers || cart.sneakers.length === 0) {
@@ -42,7 +44,10 @@ const submitOrder = async () => {
 Общая сумма: ${sumPrice.value + 20} тмт
 ${cartToString()}`;
     await sendTelegramMessage(message);
-    alert('Заказ отправлен! Спасибо за заказ');
+    allGood.value = true;
+    setTimeout(() => {
+      allGood.value = false;
+    }, 5000);
     name.value = '';
     phone.value = '+993 ';
     city.value = '';
@@ -152,10 +157,12 @@ ${cartToString()}`;
 
           <button
             type="submit"
-            class="w-full flex items-center justify-center py-3 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 transition"
+            class="w-full flex items-center justify-center py-px h-10 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 transition"
           >
-            <ButtonLoader v-if="buttonLoader" class="mr-2" />
-            <span v-else>Оформить заказ</span>
+            <Transition name="fade" mode="out-in">
+              <ButtonLoader v-if="buttonLoader" class="mx-auto" />
+              <span v-else class="w-full">Оформить заказ</span>
+            </Transition>
           </button>
         </form>
         <div class="w-full lg:w-1/2 bg-white rounded-lg shadow-md p-6 space-y-6">
@@ -198,4 +205,26 @@ ${cartToString()}`;
       </div>
     </div>
   </section>
+  <Teleport to="body">
+    <div
+      v-if="allGood"
+      class="fixed left-0 top-0 w-full h-full z-100 bg-black/40 flex justify-center items-center"
+    >
+      <div class="bg-white p-10 rounded-lg">
+        <h1 class="font-medium text-lg">Ваш заказ успешно оформлен</h1>
+        <OkButton class="mt-5" @click="allGood = false" />
+      </div>
+    </div>
+  </Teleport>
 </template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

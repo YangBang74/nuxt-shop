@@ -1,0 +1,54 @@
+<template>
+  <div>
+    <svg width="100" height="100" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="5" fill="none" stroke="#02069d" stroke-width="1" opacity="0.3">
+        <animate
+          attributeName="r"
+          values="5;10;5"
+          dur="2s"
+          begin="0s"
+          repeatCount="indefinite"
+        ></animate>
+        <animate
+          attributeName="opacity"
+          values="0.3;0.8;0.3"
+          dur="2s"
+          begin="0s"
+          repeatCount="indefinite"
+        ></animate>
+      </circle>
+      <circle cx="25" cy="25" r="10" fill="none" stroke="#02069d" stroke-width="1" opacity="0.3">
+        <animate
+          attributeName="r"
+          values="10;15;10"
+          dur="2s"
+          begin="0.3s"
+          repeatCount="indefinite"
+        ></animate>
+        <animate
+          attributeName="opacity"
+          values="0.3;0.8;0.3"
+          dur="2s"
+          begin="0.3s"
+          repeatCount="indefinite"
+        ></animate>
+      </circle>
+      <circle cx="25" cy="25" r="15" fill="none" stroke="#02069d" stroke-width="1" opacity="0.3">
+        <animate
+          attributeName="r"
+          values="15;20;15"
+          dur="2s"
+          begin="0.6s"
+          repeatCount="indefinite"
+        ></animate>
+        <animate
+          attributeName="opacity"
+          values="0.3;0.8;0.3"
+          dur="2s"
+          begin="0.6s"
+          repeatCount="indefinite"
+        ></animate>
+      </circle>
+    </svg>
+  </div>
+</template>

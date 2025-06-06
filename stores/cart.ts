@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { errorMessages } from 'vue/compiler-sfc';
 
 export const useCartShop = defineStore(
   'cart',
@@ -8,17 +9,8 @@ export const useCartShop = defineStore(
     const totalPrice = ref<number>(0);
 
     function addToCart(item: any, size: number) {
-      if (!item || typeof size !== 'number') {
-        console.warn('Неверные данные для добавления в корзину');
-        return;
-      }
-
-      const exists = sneakers.value.find((i) => i.id === item.id && i.size === size);
-
-      if (!exists) {
-        sneakers.value.push({ ...item, size });
-        totalPrice.value += item.price;
-      }
+      sneakers.value.push({ ...item, size });
+      totalPrice.value += item.price;
     }
 
     function deleteItem(index: number) {
