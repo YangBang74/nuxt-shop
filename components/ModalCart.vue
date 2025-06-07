@@ -9,7 +9,7 @@ const cart = useCartShop();
       <h1 class="text-sm font-semibold">Корзина</h1>
     </header>
     <div class="px-4 py-3 space-y-4">
-      <div v-if="cart.sneakers.length > 0" class="space-y-4">
+      <div v-if="cart.sneakers.length > 0">
         <div
           v-for="(item, i) in cart.sneakers"
           :key="i"
@@ -20,7 +20,7 @@ const cart = useCartShop();
               <NuxtImg
                 :src="item.image"
                 :alt="item.title"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-contain"
                 loading="lazy"
               />
             </div>

@@ -181,7 +181,7 @@ const brands = [
             <NuxtImg
               src="/about/about.jpg"
               alt="Sneaker"
-              class="about-img object-cover max-h-100"
+              class="about-img object-contain max-h-100"
             />
           </div>
         </div>

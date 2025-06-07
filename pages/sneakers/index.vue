@@ -33,7 +33,6 @@ async function loadSneakers() {
     const { items, total } = await getWithFilter(filters.value);
     sneakers.value = items;
     totalItems.value = total;
-    console.log(sneakers.value);
   } catch (err) {
     error.value = (err as Error).message;
     sneakers.value = [];
@@ -66,7 +65,6 @@ function onPageChange(newPage: number) {
           <div class="flex flex-wrap gap-5">
             <CartItems v-for="(sneak, i) in sneakers" :key="i" :item="sneak" />
           </div>
-
           <div class="flex justify-center mt-8">
             <Pagination
               :current-page="filters.page"

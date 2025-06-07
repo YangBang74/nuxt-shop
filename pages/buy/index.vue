@@ -180,7 +180,7 @@ ${cartToString()}`;
                   <NuxtImg
                     :src="item.image"
                     :alt="item.title"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-contain"
                     loading="lazy"
                   />
                 </div>

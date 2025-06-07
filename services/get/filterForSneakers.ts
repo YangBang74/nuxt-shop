@@ -1,5 +1,3 @@
-// services/get/filterForSneakers.ts
-
 export interface FilterParams {
   priceFrom?: number | null;
   priceTo?: number | null;
@@ -16,21 +14,36 @@ export interface SneakersResponse {
 }
 
 export async function getWithFilter(params: FilterParams): Promise<SneakersResponse> {
-  const { page = 1, limit = 12, ...filters } = params;
-  const query = new URLSearchParams({
-    page: String(page),
-    limit: String(limit),
-    ...(filters.priceFrom != null && { price_gte: String(filters.priceFrom) }),
-    ...(filters.priceTo != null && { price_lte: String(filters.priceTo) }),
-    ...(filters.selectSize != null && { size: String(filters.selectSize) }),
-    ...(filters.selectStyle && { style: filters.selectStyle }),
-    ...(filters.selectBrand && { brand: filters.selectBrand }),
-  } as Record<string, string>);
+  const { page = 1, limit = 12, priceFrom, priceTo, selectSize, selectStyle, selectBrand } = params;
+
+  const query = new URLSearchParams();
+  query.append('page', String(page));
+  query.append('limit', String(limit));
+
+  if (priceFrom !== null && priceFrom !== undefined) {
+    query.append('price[from]', String(priceFrom));
+  }
+
+  if (priceTo !== null && priceTo !== undefined) {
+    query.append('price[to]', String(priceTo));
+  }
+
+  if (selectSize !== null && selectSize !== undefined) {
+    query.append('sizes[]', String(selectSize));
+  }
+
+  if (selectStyle !== null && selectStyle !== undefined) {
+    query.append('style[]', selectStyle);
+  }
+
+  if (selectBrand !== null && selectBrand !== undefined) {
+    query.append('brand', selectBrand);
+  }
 
   const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers?${query}`);
   if (!res.ok) throw new Error(`Ошибка ${res.status}`);
 
-  const json = (await res.json()) as {
+  const json = await res.json() as {
     meta: { total_items: number; total_pages: number; current_page: number };
     items: any[];
   };
