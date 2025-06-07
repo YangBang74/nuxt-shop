@@ -11,8 +11,8 @@ export interface FilterParams {
 }
 
 export interface SneakersResponse {
-  items: any[]; // только массив
-  total: number; // общее число записей
+  items: any[];
+  total: number;
 }
 
 export async function getWithFilter(params: FilterParams): Promise<SneakersResponse> {
@@ -30,7 +30,6 @@ export async function getWithFilter(params: FilterParams): Promise<SneakersRespo
   const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers?${query}`);
   if (!res.ok) throw new Error(`Ошибка ${res.status}`);
 
-  // Mokky отдаёт { meta: { total_items, total_pages, ... }, items: [...] }
   const json = (await res.json()) as {
     meta: { total_items: number; total_pages: number; current_page: number };
     items: any[];
@@ -38,6 +37,6 @@ export async function getWithFilter(params: FilterParams): Promise<SneakersRespo
 
   return {
     items: json.items,
-    total: json.meta.total_items, // или json.meta.total_pages, если нужны страницы
+    total: json.meta.total_items,
   };
 }
