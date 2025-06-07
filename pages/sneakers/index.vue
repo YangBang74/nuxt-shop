@@ -33,6 +33,7 @@ async function loadSneakers() {
     const { items, total } = await getWithFilter(filters.value);
     sneakers.value = items;
     totalItems.value = total;
+    console.log(sneakers.value);
   } catch (err) {
     error.value = (err as Error).message;
     sneakers.value = [];
