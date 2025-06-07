@@ -54,25 +54,26 @@ function onPageChange(newPage: number) {
     <div class="container">
       <div class="flex justify-start gap-5 my-10 items-start">
         <Filter class="w-80" v-model="filters" />
-
         <div class="w-full" v-if="loading">
           <div class="h-[100vh] flex justify-center items-center">
             <Loader />
           </div>
         </div>
-
         <div v-else class="w-full">
-          <div class="flex flex-wrap gap-5">
-            <CartItems v-for="(sneak, i) in sneakers" :key="i" :item="sneak" />
+          <div v-if="sneakers.length > 0">
+            <div class="flex flex-wrap gap-5">
+              <CartItems v-for="(sneak, i) in sneakers" :key="i" :item="sneak" />
+            </div>
+            <div class="flex justify-center mt-8">
+              <Pagination
+                :current-page="filters.page"
+                :page-size="filters.limit"
+                :total="totalItems"
+                @change="onPageChange"
+              />
+            </div>
           </div>
-          <div class="flex justify-center mt-8">
-            <Pagination
-              :current-page="filters.page"
-              :page-size="filters.limit"
-              :total="totalItems"
-              @change="onPageChange"
-            />
-          </div>
+          <div v-else><p class="text-center font-medium text-xl my-20">Ничего не найдено</p></div>
         </div>
       </div>
     </div>
