@@ -1,5 +1,5 @@
 <script setup>
-import { useSearch } from '@/composables/useSearch';
+import { useSearch } from '@/services/useSearch';
 const { query, submit } = useSearch();
 </script>
 
