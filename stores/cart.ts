@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { errorMessages } from 'vue/compiler-sfc';
 
 export const useCartShop = defineStore(
   'cart',

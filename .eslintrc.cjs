@@ -1,8 +1,8 @@
 import js from '@eslint/js'
 import vue from 'eslint-plugin-vue'
 import nuxt from 'eslint-plugin-nuxt'
-import parser from 'vue-eslint-parser'
-import tsParser from '@typescript-eslint/parser'
+import parser from '@typescript-eslint/parser'
+import vueParser from 'vue-eslint-parser'
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
@@ -13,11 +13,12 @@ export default [
   {
     files: ['**/*.vue'],
     languageOptions: {
-      parser, // vue-eslint-parser
+      parser: vueParser,
       parserOptions: {
-        parser: tsParser, // 👈 это вложенный TS-парсер для <script lang="ts">
+        parser, // вложенный TS-парсер
         ecmaVersion: 'latest',
         sourceType: 'module',
+        project: './tsconfig.json',
         extraFileExtensions: ['.vue']
       },
       globals: {
@@ -27,15 +28,8 @@ export default [
         defineEventHandler: 'readonly',
         readBody: 'readonly',
         useRuntimeConfig: 'readonly',
-        useState: 'readonly',
         $fetch: 'readonly',
-        definePageMeta: 'readonly',
-        defineNuxtPlugin: 'readonly',
-        ref: 'readonly',
-        process: 'readonly',
-        fetch: 'readonly',
-        alert: 'readonly',
-        console: 'readonly',
+        useState: 'readonly'
       }
     },
     plugins: {
@@ -45,6 +39,17 @@ export default [
     rules: {
       'no-console': 'warn',
       'vue/multi-word-component-names': 'off'
+    }
+  },
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json'
+      }
     }
   }
 ]
