@@ -90,10 +90,13 @@ const cancelForm = () => {
 onMounted(() => {
   getComments(productId);
 });
+
 const closeMessage = () => {
   messageIsActive.value = false;
   commentIsError.value = false;
 };
+
+const isCommented = computed(() => comments.value.some((comment) => comment.authorId === user.id));
 </script>
 
 <template>
@@ -101,8 +104,13 @@ const closeMessage = () => {
     <div class="container">
       <div class="flex justify-between items-center">
         <h1 class="font-bold text-3xl">Отзывы к товару</h1>
-        <button type="button" @click="addCommentIsActive = !addCommentIsActive">
-          Добавить отзыв
+        <button
+          type="button"
+          @click="addCommentIsActive = !addCommentIsActive"
+          :disabled="isCommented"
+        >
+          <span v-if="isCommented">Вы уже оставили отзыв</span>
+          <span v-else>Добавить отзыв</span>
         </button>
       </div>
 
@@ -126,6 +134,7 @@ const closeMessage = () => {
           <div class="flex justify-end gap-2">
             <button
               @click="addNewComment"
+              :disabled="isCommented"
               class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
             >
               Отправить

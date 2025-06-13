@@ -47,68 +47,72 @@ const addItemCart = async (snake: unknown, price: number | null) => {
   <div class="w-full h-[100vh] flex justify-center items-center" v-if="loading">
     <Loader />
   </div>
-  <section class="py-16 min-h-screen" v-else>
-    <div class="container mx-auto px-4">
-      <div v-if="loading" class="flex justify-center items-center py-20">
-        <span class="text-gray-500">Загрузка товара...</span>
-      </div>
-      <div v-else-if="error" class="flex justify-center items-center py-20">
-        <span class="text-red-500">{{ error }}</span>
-      </div>
-      <div v-else class="flex flex-col lg:flex-row gap-8">
-        <div class="w-full lg:w-1/2 flex justify-center">
-          <div class="w-full max-w-md aspect-square bg-white rounded-lg shadow-md overflow-hidden">
-            <NuxtImg
-              :src="sneakers.image"
-              alt="Sneaker Image"
-              class="w-full h-full object-contain"
-              loading="lazy"
-            />
+  <div v-else>
+    <section class="py-16 min-h-screen">
+      <div class="container mx-auto px-4">
+        <div v-if="loading" class="flex justify-center items-center py-20">
+          <span class="text-gray-500">Загрузка товара...</span>
+        </div>
+        <div v-else-if="error" class="flex justify-center items-center py-20">
+          <span class="text-red-500">{{ error }}</span>
+        </div>
+        <div v-else class="flex flex-col lg:flex-row gap-8">
+          <div class="w-full lg:w-1/2 flex justify-center">
+            <div
+              class="w-full max-w-md aspect-square bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <NuxtImg
+                :src="sneakers.image"
+                alt="Sneaker Image"
+                class="w-full h-full object-contain"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="w-full lg:w-1/2 flex flex-col justify-center">
+            <div>
+              <h1 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
+                {{ sneakers.title }}
+              </h1>
+              <p class="text-gray-700 my-2">Выберите размер</p>
+              <div class="flex flex-wrap gap-3 my-6">
+                <button
+                  v-for="(size, i) in sneakers.sizes"
+                  :key="i"
+                  type="button"
+                  @click="selectSize = size"
+                  :class="[
+                    'w-12 h-10 flex items-center justify-center border rounded-lg text-sm font-medium transition',
+                    selectSize === size
+                      ? 'bg-green-500 text-white border-green-500'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100',
+                  ]"
+                >
+                  {{ size }}
+                </button>
+              </div>
+              <div class="flex items-center gap-3 mb-6">
+                <Rating :rating="sneakers.rating" :readonly="true" />
+                <span class="text-gray-800 font-semibold">{{ sneakers.rating.toFixed(1) }}</span>
+              </div>
+              <p class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8">
+                {{ sneakers.price }} тмт
+              </p>
+            </div>
+            <button
+              type="button"
+              class="w-full py-3 rounded-lg text-white font-semibold transition disabled:bg-gray-400 disabled:cursor-not-allowed text-center bg-green-600 hover:bg-green-700"
+              @click="addItemCart(sneakers, selectSize)"
+              :disabled="!selectSize"
+            >
+              {{ selectSize ? 'Добавить в корзину' : 'Выберите размер' }}
+            </button>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 flex flex-col justify-center">
-          <div>
-            <h1 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
-              {{ sneakers.title }}
-            </h1>
-            <p class="text-gray-700 my-2">Выберите размер</p>
-            <div class="flex flex-wrap gap-3 my-6">
-              <button
-                v-for="(size, i) in sneakers.sizes"
-                :key="i"
-                type="button"
-                @click="selectSize = size"
-                :class="[
-                  'w-12 h-10 flex items-center justify-center border rounded-lg text-sm font-medium transition',
-                  selectSize === size
-                    ? 'bg-green-500 text-white border-green-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100',
-                ]"
-              >
-                {{ size }}
-              </button>
-            </div>
-            <div class="flex items-center gap-3 mb-6">
-              <Rating :rating="sneakers.rating" :readonly="true" />
-              <span class="text-gray-800 font-semibold">{{ sneakers.rating.toFixed(1) }}</span>
-            </div>
-            <p class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8">
-              {{ sneakers.price }} тмт
-            </p>
-          </div>
-          <button
-            type="button"
-            class="w-full py-3 rounded-lg text-white font-semibold transition disabled:bg-gray-400 disabled:cursor-not-allowed text-center bg-green-600 hover:bg-green-700"
-            @click="addItemCart(sneakers, selectSize)"
-            :disabled="!selectSize"
-          >
-            {{ selectSize ? 'Добавить в корзину' : 'Выберите размер' }}
-          </button>
-        </div>
       </div>
-    </div>
-  </section>
-  <Comments @updated="getSneak" />
+    </section>
+    <Comments @updated="getSneak" />
+  </div>
   <Teleport to="body">
     <div
       v-if="allGood"
