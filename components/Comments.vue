@@ -6,6 +6,7 @@ import Rating from '@/components/Rating.vue';
 import InputSign from '@/components/InputSign.vue';
 import { getComment } from '~/services/get/getComments';
 import { addComment } from '~/services/set/addComment';
+import { updateProductRating } from '~/services/updateRating';
 const route = useRoute();
 const productId = Number(route.params.id);
 const user = useUserStore();
@@ -38,27 +39,11 @@ const getComments = async (productId: number) => {
   }
 };
 
-const updateProductRating = async () => {
+const updateRating = async () => {
   try {
-    const productComments = comments.value.filter(
-      (c) => c.productId === productId && typeof c.rating === 'number'
-    );
-    if (productComments.length === 0) return;
-
-    const sum = productComments.reduce((acc, c) => acc + c.rating, 0);
-    const avgRating = Number((sum / productComments.length).toFixed(1));
-
-    const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${productId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rating: avgRating }),
-    });
-
-    if (!res.ok) throw new Error('Ошибка при обновлении рейтинга товара');
+    return await updateProductRating(productId, comments);
   } catch (e) {
-    console.error('Ошибка при пересчёте рейтинга:', e);
+    console.log(e);
   }
 };
 
@@ -76,7 +61,7 @@ const addNewComment = async () => {
     rating: rating.value,
   };
   try {
-    const response = await addComment(newComment);
+    await addComment(newComment);
     author.value = '';
     text.value = '';
     rating.value = 0;
@@ -87,7 +72,7 @@ const addNewComment = async () => {
     }, 5000);
 
     await getComments(productId);
-    await updateProductRating();
+    await updateRating();
   } catch (e) {
     commentIsError.value = true;
   }
