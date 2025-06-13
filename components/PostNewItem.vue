@@ -130,7 +130,6 @@ const addItem = (event: Event) => {
     </form>
   </article>
 
-  <!-- Сообщение об успешном добавлении -->
   <Teleport to="body">
     <Transition name="fade">
       <div

@@ -35,16 +35,6 @@ async function fetchData() {
 
 onMounted(fetchData);
 
-// async function onRatingChange(value: number) {
-//   if (!sneakers.value) return;
-//   try {
-//     await updateSneakerRating(sneakers.value.id, value);
-//     sneakers.value.rating = value;
-//   } catch (err) {
-//     console.error('Ошибка при обновлении рейтинга:', err);
-//   }
-// }
-
 const addItemCart = async (snake: unknown, price: number | null) => {
   addLoader.value = true;
   try {
@@ -63,7 +53,7 @@ const addItemCart = async (snake: unknown, price: number | null) => {
   <div class="w-full h-[100vh] flex justify-center items-center" v-if="loading">
     <Loader />
   </div>
-  <section class="py-16 bg-gray-50 min-h-screen" v-else>
+  <section class="py-16 min-h-screen" v-else>
     <div class="container mx-auto px-4">
       <div v-if="loading" class="flex justify-center items-center py-20">
         <span class="text-gray-500">Загрузка товара...</span>
@@ -105,7 +95,7 @@ const addItemCart = async (snake: unknown, price: number | null) => {
               </button>
             </div>
             <div class="flex items-center gap-3 mb-6">
-              <Rating :model-value="sneakers.rating" :readonly="true" />
+              <Rating :rating="sneakers.rating" :readonly="true" />
               <span class="text-gray-800 font-semibold">{{ sneakers.rating.toFixed(1) }}</span>
             </div>
             <p class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8">

@@ -13,7 +13,9 @@ const addCommentIsActive = ref(false);
 const author = ref<string>('');
 const text = ref<string>('');
 const rating = ref<number>(0);
-
+const messageIsActive = ref<boolean>(false);
+const commentIsError = ref<boolean>(false);
+const commentErrorMessage = ref<string | null>(null);
 interface Comment {
   id: number;
   productId: number;
@@ -63,7 +65,7 @@ const updateProductRating = async () => {
 
 const submitComment = async () => {
   if (!author.value.trim() || !text.value.trim() || rating.value === 0) {
-    alert('Заполните все поля и поставьте оценку');
+    commentErrorMessage.value = 'Заполните все поля и поставьте оценку';
     return;
   }
 
@@ -90,7 +92,10 @@ const submitComment = async () => {
     rating.value = 0;
     addCommentIsActive.value = false;
 
-    alert('Комментарий отправлен!');
+    messageIsActive.value = true;
+    setTimeout(() => {
+      messageIsActive.value = false;
+    }, 5000);
     await getComment();
     await updateProductRating();
   } catch (e) {
@@ -106,10 +111,14 @@ const cancelForm = () => {
 onMounted(() => {
   getComment();
 });
+const closeMessage = () => {
+  messageIsActive.value = false;
+  commentIsError.value = false;
+};
 </script>
 
 <template>
-  <section class="my-20">
+  <section class="mb-20">
     <div class="container">
       <div class="flex justify-between items-center">
         <h1 class="font-bold text-3xl">Отзывы к товару</h1>
@@ -121,10 +130,13 @@ onMounted(() => {
       <Transition name="fade">
         <article
           v-if="addCommentIsActive"
-          class="p-4 bg-white rounded-2xl shadow-md flex flex-col gap-4 w-full max-w-xl"
+          class="p-4 bg-white rounded-2xl shadow-md flex flex-col gap-4 w-full max-w-xl my-5"
         >
-          <Rating v-model:rating="rating" :can-vote="true" />
-          <InputSign label="Введите ваше имя" v-model="author" />
+          <p class="text-red-500 font-medium" v-if="commentErrorMessage">
+            {{ commentErrorMessage }}
+          </p>
+          <Rating v-model:rating="rating" :can-vote="true" class="mt-2" />
+          <InputSign label="Введите ваше имя" v-model="author" name="name" type="text" />
           <textarea
             v-model="text"
             placeholder="Оставьте комментарий..."
@@ -152,17 +164,50 @@ onMounted(() => {
       <div class="flex flex-col gap-5 mt-10">
         <div v-for="(comment, i) in comments" :key="i" class="bg-white shadow p-4 rounded-xl">
           <div class="flex justify-between items-center gap-5">
-            <h3 class="font-bold">{{ comment.author }}</h3>
+            <div class="flex gap-2 items-center">
+              <h3 class="font-bold">{{ comment.author }}</h3>
+              <Rating :rating="comment.rating" :can-vote="false" />
+            </div>
+
             <span class="text-sm text-gray-500">{{
               new Date(comment.createdAt).toLocaleString()
             }}</span>
           </div>
-          <Rating :rating="comment.rating" :can-vote="false" class="my-3" />
+
           <p>{{ comment.text }}</p>
         </div>
       </div>
     </div>
   </section>
+  
+  <!-- Modal messages -->
+  <Teleport to="body">
+    <Transition name="fade">
+      <div
+        v-if="messageIsActive || commentIsError"
+        class="fixed inset-0 bg-black/60 flex justify-center items-center z-50"
+      >
+        <div class="bg-white rounded-xl p-6 w-80 text-center shadow-lg animate-fade-in">
+          <p class="text-lg font-semibold text-gray-800">
+            {{
+              commentIsError
+                ? 'Что-то пошло не так, попробуйте заново!'
+                : 'Комментарий успешно добавлен!'
+            }}
+          </p>
+          <button
+            @click="closeMessage"
+            class="mt-4 w-full py-2 rounded text-white transition"
+            :class="
+              commentIsError ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'
+            "
+          >
+            Хорошо
+          </button>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>

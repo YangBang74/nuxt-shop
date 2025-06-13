@@ -13,6 +13,7 @@ const emit = defineEmits<{
 
 const innerRating = ref<number>(props.rating || 0);
 
+// Обновляем внутреннее состояние, если проп изменился
 watch(
   () => props.rating,
   (newVal) => {
@@ -22,6 +23,7 @@ watch(
   }
 );
 
+// Вычисляем ширину активных звёзд
 const ratingWidth = computed(() => {
   return (innerRating.value / 5) * 100;
 });
@@ -33,7 +35,7 @@ const ratingWidthStyle = computed(() => {
 const ChangeRating = (i: number) => {
   if (props.readonly || !props.canVote) return;
   innerRating.value = i;
-  emit('update:rating', i);
+  emit('update:rating', i); // синхронизация с родителем
 };
 </script>
 
