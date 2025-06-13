@@ -9,7 +9,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .ts,.vue",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@nuxt/fonts": "^0.11.4",
