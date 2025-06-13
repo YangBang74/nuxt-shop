@@ -149,7 +149,7 @@ const isCommented = computed(() => comments.value.some((comment) => comment.auth
         </article>
       </Transition>
 
-      <div class="flex flex-col gap-5 mt-10">
+      <div class="flex flex-col gap-5 mt-10" v-if="comments.length">
         <div v-for="(comment, i) in comments" :key="i" class="bg-white shadow p-4 rounded-xl">
           <div class="flex justify-between items-center gap-5">
             <div class="flex gap-2 items-center">
@@ -165,6 +165,7 @@ const isCommented = computed(() => comments.value.some((comment) => comment.auth
           <p class="mt-3">{{ comment.text }}</p>
         </div>
       </div>
+      <div v-else><p class="my-10 text-center">Отзывов пока нету</p></div>
     </div>
   </section>
 
