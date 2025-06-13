@@ -29,7 +29,7 @@ const getSneak = async () => {
 
 onMounted(getSneak);
 
-const addItemCart = async (snake: unknown, price: number | null) => {
+const addItemCart = async (snake: Ref<any>, price: number) => {
   addLoader.value = true;
   try {
     await cart.addToCart(snake, price);
