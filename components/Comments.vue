@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import Rating from '@/components/Rating.vue';
 import InputSign from '@/components/InputSign.vue';
-
+import { getComment } from '~/services/get/getComments';
+import { addComment } from '~/services/set/addComment';
 const route = useRoute();
 const productId = Number(route.params.id);
 const user = useUserStore();
@@ -16,6 +17,7 @@ const rating = ref<number>(0);
 const messageIsActive = ref<boolean>(false);
 const commentIsError = ref<boolean>(false);
 const commentErrorMessage = ref<string | null>(null);
+
 interface Comment {
   id: number;
   productId: number;
@@ -28,12 +30,9 @@ interface Comment {
 
 const comments = ref<Comment[]>([]);
 
-const getComment = async () => {
+const getComments = async (productId: number) => {
   try {
-    const response = await fetch(
-      `https://175061237ca5525f.mokky.dev/comments?productId=${productId}`
-    );
-    comments.value = await response.json();
+    comments.value = await getComment(productId);
   } catch (e) {
     console.error(e);
   }
@@ -63,12 +62,11 @@ const updateProductRating = async () => {
   }
 };
 
-const submitComment = async () => {
+const addNewComment = async () => {
   if (!author.value.trim() || !text.value.trim() || rating.value === 0) {
     commentErrorMessage.value = 'Заполните все поля и поставьте оценку';
     return;
   }
-
   const newComment = {
     productId,
     author: author.value,
@@ -77,30 +75,21 @@ const submitComment = async () => {
     createdAt: new Date().toISOString(),
     rating: rating.value,
   };
-
   try {
-    const response = await fetch('https://175061237ca5525f.mokky.dev/comments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newComment),
-    });
-
-    if (!response.ok) throw new Error('Ошибка при отправке комментария');
-
+    const response = await addComment(newComment);
     author.value = '';
     text.value = '';
     rating.value = 0;
     addCommentIsActive.value = false;
-
     messageIsActive.value = true;
     setTimeout(() => {
       messageIsActive.value = false;
     }, 5000);
-    await getComment();
+
+    await getComments(productId);
     await updateProductRating();
   } catch (e) {
-    console.error(e);
-    alert('Не удалось отправить комментарий');
+    commentIsError.value = true;
   }
 };
 
@@ -109,7 +98,7 @@ const cancelForm = () => {
 };
 
 onMounted(() => {
-  getComment();
+  getComments(productId);
 });
 const closeMessage = () => {
   messageIsActive.value = false;
@@ -146,7 +135,7 @@ const closeMessage = () => {
 
           <div class="flex justify-end gap-2">
             <button
-              @click="submitComment"
+              @click="addNewComment"
               class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
             >
               Отправить
@@ -174,12 +163,12 @@ const closeMessage = () => {
             }}</span>
           </div>
 
-          <p>{{ comment.text }}</p>
+          <p class="mt-3">{{ comment.text }}</p>
         </div>
       </div>
     </div>
   </section>
-  
+
   <!-- Modal messages -->
   <Teleport to="body">
     <Transition name="fade">
