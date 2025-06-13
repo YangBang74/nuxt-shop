@@ -1,0 +1,177 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user';
+import Rating from '@/components/Rating.vue';
+import InputSign from '@/components/InputSign.vue';
+
+const route = useRoute();
+const productId = Number(route.params.id);
+const user = useUserStore();
+
+const addCommentIsActive = ref(false);
+const author = ref<string>('');
+const text = ref<string>('');
+const rating = ref<number>(0);
+
+interface Comment {
+  id: number;
+  productId: number;
+  author: string;
+  authorId: number;
+  text: string;
+  createdAt: string;
+  rating: number;
+}
+
+const comments = ref<Comment[]>([]);
+
+const getComment = async () => {
+  try {
+    const response = await fetch(
+      `https://175061237ca5525f.mokky.dev/comments?productId=${productId}`
+    );
+    comments.value = await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const updateProductRating = async () => {
+  try {
+    const productComments = comments.value.filter(
+      (c) => c.productId === productId && typeof c.rating === 'number'
+    );
+    if (productComments.length === 0) return;
+
+    const sum = productComments.reduce((acc, c) => acc + c.rating, 0);
+    const avgRating = Number((sum / productComments.length).toFixed(1));
+
+    const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${productId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ rating: avgRating }),
+    });
+
+    if (!res.ok) throw new Error('Ошибка при обновлении рейтинга товара');
+  } catch (e) {
+    console.error('Ошибка при пересчёте рейтинга:', e);
+  }
+};
+
+const submitComment = async () => {
+  if (!author.value.trim() || !text.value.trim() || rating.value === 0) {
+    alert('Заполните все поля и поставьте оценку');
+    return;
+  }
+
+  const newComment = {
+    productId,
+    author: author.value,
+    authorId: user.id,
+    text: text.value,
+    createdAt: new Date().toISOString(),
+    rating: rating.value,
+  };
+
+  try {
+    const response = await fetch('https://175061237ca5525f.mokky.dev/comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newComment),
+    });
+
+    if (!response.ok) throw new Error('Ошибка при отправке комментария');
+
+    author.value = '';
+    text.value = '';
+    rating.value = 0;
+    addCommentIsActive.value = false;
+
+    alert('Комментарий отправлен!');
+    await getComment();
+    await updateProductRating();
+  } catch (e) {
+    console.error(e);
+    alert('Не удалось отправить комментарий');
+  }
+};
+
+const cancelForm = () => {
+  addCommentIsActive.value = false;
+};
+
+onMounted(() => {
+  getComment();
+});
+</script>
+
+<template>
+  <section class="my-20">
+    <div class="container">
+      <div class="flex justify-between items-center">
+        <h1 class="font-bold text-3xl">Отзывы к товару</h1>
+        <button type="button" @click="addCommentIsActive = !addCommentIsActive">
+          Добавить отзыв
+        </button>
+      </div>
+
+      <Transition name="fade">
+        <article
+          v-if="addCommentIsActive"
+          class="p-4 bg-white rounded-2xl shadow-md flex flex-col gap-4 w-full max-w-xl"
+        >
+          <Rating v-model:rating="rating" :can-vote="true" />
+          <InputSign label="Введите ваше имя" v-model="author" />
+          <textarea
+            v-model="text"
+            placeholder="Оставьте комментарий..."
+            class="w-full p-3 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows="4"
+          ></textarea>
+
+          <div class="flex justify-end gap-2">
+            <button
+              @click="submitComment"
+              class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
+            >
+              Отправить
+            </button>
+            <button
+              @click="cancelForm"
+              class="px-4 py-2 rounded-xl bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+            >
+              Отмена
+            </button>
+          </div>
+        </article>
+      </Transition>
+
+      <div class="flex flex-col gap-5 mt-10">
+        <div v-for="(comment, i) in comments" :key="i" class="bg-white shadow p-4 rounded-xl">
+          <div class="flex justify-between items-center gap-5">
+            <h3 class="font-bold">{{ comment.author }}</h3>
+            <span class="text-sm text-gray-500">{{
+              new Date(comment.createdAt).toLocaleString()
+            }}</span>
+          </div>
+          <Rating :rating="comment.rating" :can-vote="false" class="my-3" />
+          <p>{{ comment.text }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
   },
   fonts: {
-    families: [{ name: 'Montserrat', provider: 'google' }],
+    families: [{ name: 'Roboto', provider: 'google' }],
   },
   nitro: {
     prerender: { routes: ['/'] },

@@ -11,12 +11,13 @@ export const useUserStore = defineStore(
     const email = ref<string | null>(null);
     const token = ref<string | null>(null);
     const role = ref<UserRole | null>(null);
-
-    function setUser(name: string, mail: string, jwt: string, userRole: UserRole) {
+    const id = ref<number | null>(null);
+    function setUser(name: string, mail: string, jwt: string, userRole: UserRole, index: number) {
       fullName.value = name;
       email.value = mail;
       token.value = jwt;
       role.value = userRole;
+      id.value = index;
     }
 
     function logout() {
@@ -24,10 +25,11 @@ export const useUserStore = defineStore(
       email.value = null;
       token.value = null;
       role.value = null;
+      id.value = null;
       return navigateTo('/', { replace: true });
     }
 
-    return { fullName, email, token, role, setUser, logout };
+    return { fullName, email, token, role, id, setUser, logout };
   },
   {
     persist: true,

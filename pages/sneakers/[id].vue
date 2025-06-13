@@ -105,7 +105,7 @@ const addItemCart = async (snake: unknown, price: number | null) => {
               </button>
             </div>
             <div class="flex items-center gap-3 mb-6">
-              <Rating :rating="sneakers.rating" @update:rating="onRatingChange" />
+              <Rating :model-value="sneakers.rating" :readonly="true" />
               <span class="text-gray-800 font-semibold">{{ sneakers.rating.toFixed(1) }}</span>
             </div>
             <p class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8">
@@ -124,6 +124,7 @@ const addItemCart = async (snake: unknown, price: number | null) => {
       </div>
     </div>
   </section>
+  <Comments />
   <Teleport to="body">
     <div
       v-if="allGood"

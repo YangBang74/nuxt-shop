@@ -26,7 +26,7 @@ const registerFunction = async (event: Event) => {
       error.value = data;
       return;
     }
-    user.setUser(data.data.fullName, data.data.email, data.token);
+    user.setUser(data.data.fullName, data.data.email, data.token, data.data.role, data.data.id);
     await router.push('/');
   } catch (err: any) {
     console.error(err);

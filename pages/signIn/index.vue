@@ -20,13 +20,20 @@ const registerFunction = async (event: Event) => {
   event.preventDefault();
   error.value = '';
   try {
-    const data = await signIn(mail.value, pass.value);
-    if (typeof data === 'string') {
-      error.value = data;
+    const response = await signIn(mail.value, pass.value);
+    if (typeof response === 'string') {
+      error.value = response;
       return;
     }
-    user.setUser(data.data.fullName, data.data.email, data.token, data.data.role);
-    // Можно добавить редирект после успешного входа
+    console.log(response);
+
+    user.setUser(
+      response.data.fullName,
+      response.data.email,
+      response.token,
+      response.data.role,
+      response.data.id
+    );
     await router.push('/');
   } catch (err: any) {
     console.error(err);
