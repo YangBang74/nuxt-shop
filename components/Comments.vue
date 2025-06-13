@@ -39,9 +39,14 @@ const getComments = async (productId: number) => {
   }
 };
 
+const emit = defineEmits<{
+  (e: 'updated'): void;
+}>();
+
 const updateRating = async () => {
   try {
-    return await updateProductRating(productId, comments);
+    await updateProductRating(productId, comments);
+    emit('updated');
   } catch (e) {
     console.log(e);
   }

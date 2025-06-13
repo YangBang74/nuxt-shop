@@ -5,6 +5,7 @@ import { useCartShop } from '~/stores/cart';
 import Rating from '~/components/Rating.vue';
 import OkButton from '~/components/UI/OkButton.vue';
 import Loader from '~/components/UI/Loader.vue';
+import { fetchData } from '~/services/get/getSneakerWithId';
 
 const cart = useCartShop();
 const route = useRoute();
@@ -17,23 +18,16 @@ const selectSize = ref<number | null>(null);
 const addLoader = ref<boolean>(false);
 const allGood = ref<boolean>(false);
 const setError = ref<boolean>(false);
-async function fetchData() {
-  loading.value = true;
-  try {
-    const response = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${id}`);
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Ошибка при получении данных');
-    }
-    sneakers.value = data;
-  } catch (err: any) {
-    error.value = err.message || 'Что-то пошло не так';
-  } finally {
-    loading.value = false;
-  }
-}
 
-onMounted(fetchData);
+const getSneak = async () => {
+  try {
+    await fetchData(loading, sneakers, id);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+onMounted(getSneak);
 
 const addItemCart = async (snake: unknown, price: number | null) => {
   addLoader.value = true;
@@ -114,7 +108,7 @@ const addItemCart = async (snake: unknown, price: number | null) => {
       </div>
     </div>
   </section>
-  <Comments />
+  <Comments @updated="getSneak" />
   <Teleport to="body">
     <div
       v-if="allGood"
