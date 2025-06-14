@@ -9,17 +9,17 @@ const team = [
   {
     name: 'Ян',
     role: 'Основатель и разработчик',
-    photo: '/team/yan.jpg',
+    photo: '/user.jpg',
   },
   {
     name: 'Алиса',
     role: 'Дизайнер UI/UX',
-    photo: '/team/alisa.jpg',
+    photo: '/user.jpg',
   },
   {
     name: 'Максим',
     role: 'Менеджер по продукту',
-    photo: '/team/max.jpg',
+    photo: '/user.jpg',
   },
 ];
 </script>
