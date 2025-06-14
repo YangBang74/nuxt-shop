@@ -6,12 +6,13 @@ import Rating from '~/components/Rating.vue';
 import OkButton from '~/components/UI/OkButton.vue';
 import Loader from '~/components/UI/Loader.vue';
 import { fetchData } from '~/services/get/getSneakerWithId';
+import type { Sneaker } from '~/shared/types/sneaker';
 
 const cart = useCartShop();
 const route = useRoute();
 const id = route.params.id as string;
 
-const sneakers = ref<any>(null);
+const sneakers = ref<Sneaker | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 const selectSize = ref<number | null>(null);
@@ -29,7 +30,7 @@ const getSneak = async () => {
 
 onMounted(getSneak);
 
-const addItemCart = async (snake: Ref<any>, price: number) => {
+const addItemCart = async (snake: Sneaker, price: number) => {
   addLoader.value = true;
   try {
     await cart.addToCart(snake, price);
@@ -39,6 +40,12 @@ const addItemCart = async (snake: Ref<any>, price: number) => {
     }, 2000);
   } catch {
     setError.value = true;
+  }
+};
+
+const handleAddToCart = () => {
+  if (sneakers.value && selectSize.value) {
+    addItemCart(sneakers.value, selectSize.value);
   }
 };
 </script>
@@ -62,7 +69,7 @@ const addItemCart = async (snake: Ref<any>, price: number) => {
               class="w-full max-w-md aspect-square bg-white rounded-lg shadow-md overflow-hidden"
             >
               <NuxtImg
-                :src="sneakers.image"
+                :src="sneakers?.image"
                 alt="Sneaker Image"
                 class="w-full h-full object-contain"
                 loading="lazy"
@@ -72,12 +79,12 @@ const addItemCart = async (snake: Ref<any>, price: number) => {
           <div class="w-full lg:w-1/2 flex flex-col justify-center">
             <div>
               <h1 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
-                {{ sneakers.title }}
+                {{ sneakers?.title }}
               </h1>
               <p class="text-gray-700 my-2">Выберите размер</p>
               <div class="flex flex-wrap gap-3 my-6">
                 <button
-                  v-for="(size, i) in sneakers.sizes"
+                  v-for="(size, i) in sneakers?.sizes"
                   :key="i"
                   type="button"
                   @click="selectSize = size"
@@ -92,17 +99,17 @@ const addItemCart = async (snake: Ref<any>, price: number) => {
                 </button>
               </div>
               <div class="flex items-center gap-3 mb-6">
-                <Rating :rating="sneakers.rating" :readonly="true" />
-                <span class="text-gray-800 font-semibold">{{ sneakers.rating.toFixed(1) }}</span>
+                <Rating :rating="sneakers?.rating" :readonly="true" />
+                <span class="text-gray-800 font-semibold">{{ sneakers?.rating?.toFixed(1) }}</span>
               </div>
               <p class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8">
-                {{ sneakers.price }} тмт
+                {{ sneakers?.price }} тмт
               </p>
             </div>
             <button
               type="button"
               class="w-full py-3 rounded-lg text-white font-semibold transition disabled:bg-gray-400 disabled:cursor-not-allowed text-center bg-green-600 hover:bg-green-700"
-              @click="addItemCart(sneakers, selectSize)"
+              @click="handleAddToCart"
               :disabled="!selectSize"
             >
               {{ selectSize ? 'Добавить в корзину' : 'Выберите размер' }}

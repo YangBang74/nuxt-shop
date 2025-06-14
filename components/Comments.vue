@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useUserStore } from '@/stores/user';
 import Rating from '@/components/Rating.vue';
-import InputSign from '@/components/InputSign.vue';
 import { getComment } from '~/services/get/getComments';
 import { addComment } from '~/services/set/addComment';
 import { updateProductRating } from '~/services/updateRating';
+import type { NewComment, Comment } from '~/shared/types/Comment';
+
 const route = useRoute();
 const productId = Number(route.params.id);
 const user = useUserStore();
@@ -18,16 +16,6 @@ const rating = ref<number>(0);
 const messageIsActive = ref<boolean>(false);
 const commentIsError = ref<boolean>(false);
 const commentErrorMessage = ref<string | null>(null);
-
-interface Comment {
-  id: number;
-  productId: number;
-  author: string;
-  authorId: number;
-  text: string;
-  createdAt: string;
-  rating: number;
-}
 
 const comments = ref<Comment[]>([]);
 
@@ -45,7 +33,7 @@ const emit = defineEmits<{
 
 const updateRating = async () => {
   try {
-    await updateProductRating(productId, comments);
+    await updateProductRating(productId, comments.value);
     emit('updated');
   } catch (e) {
     console.log(e);
@@ -57,7 +45,7 @@ const addNewComment = async () => {
     commentErrorMessage.value = 'Заполните все поля и поставьте оценку';
     return;
   }
-  const newComment = {
+  const newComment: NewComment = {
     productId,
     author: author.value,
     authorId: user.id,
@@ -80,6 +68,7 @@ const addNewComment = async () => {
     await updateRating();
   } catch (e) {
     commentIsError.value = true;
+    console.log(e);
   }
 };
 

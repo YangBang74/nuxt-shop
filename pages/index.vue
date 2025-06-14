@@ -2,27 +2,28 @@
 import 'vue3-carousel/carousel.css';
 import { Carousel, Slide, Navigation as CarouselNavigation, Pagination } from 'vue3-carousel';
 import getSneakers from '~/services/get/getSneakers';
-import { useUserStore } from '#imports';
 import Loader from '~/components/UI/Loader.vue';
-
-const user = useUserStore();
-
+import type { Sneaker } from '~/shared/types/sneaker';
 useSeoMeta({
   title: 'YangShop',
   description: 'Добро пожаловать в наш магазин!',
   ogTitle: 'Home Page – My Shop',
 });
 
-const snakers = ref([]);
-const loading = ref(false);
-const error = ref(null);
+const sneakers = ref<Sneaker[]>([]);
+const loading = ref<boolean>(false);
+const error = ref<string | null>(null);
 
 onMounted(async () => {
   loading.value = true;
   try {
-    snakers.value = await getSneakers();
-  } catch (err) {
-    error.value = err.message || 'Ошибка при получении данных';
+    sneakers.value = await getSneakers();
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message;
+    } else {
+      error.value = 'Ошибка при получении данных';
+    }
   } finally {
     loading.value = false;
   }
@@ -138,7 +139,7 @@ const brands = [
             class="w-full"
             snapAlign="start"
           >
-            <Slide v-for="(snake, i) in snakers.slice(0, 10)" :key="i">
+            <Slide v-for="(snake, i) in sneakers.slice(0, 10)" :key="i">
               <CartItems :item="snake" />
             </Slide>
             <template #addons>

@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { updateSneaker } from '~/services/set/changeSneake';
 const props = defineProps<{
-  item: Array<any>;
+  item: {
+    image: string;
+    id: number;
+    brand: string;
+    rating: number;
+    styles: string[];
+    title: string;
+    sizes: number[];
+    price: number;
+  };
 }>();
 
 const isEditing = ref(false);

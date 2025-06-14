@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { Sneaker } from '~/shared/types/sneaker';
+
 withDefaults(
   defineProps<{
     link?: string;
-    item: Array<any>;
+    item: Sneaker;
   }>(),
   {
     link: 'sneakers',

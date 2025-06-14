@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '#imports';
+import { useCartShop } from '#imports';
 
 const user = useUserStore();
 const route = useRoute();

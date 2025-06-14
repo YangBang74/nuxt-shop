@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { getWithFilter } from '~/services/get/filterForSneakers';
 import type { FilterParams } from '~/services/get/filterForSneakers';
+import type { Sneaker } from '~/shared/types/sneaker';
 import Loader from '~/components/UI/Loader.vue';
 import Pagination from '~/components/PaginationPage.vue';
+import PaginationPage from '~/components/PaginationPage.vue';
 
 definePageMeta({ layout: 'default' });
 useSeoMeta({
@@ -11,7 +13,7 @@ useSeoMeta({
   ogTitle: 'Home Page – My Shop',
 });
 
-const sneakers = ref<any[]>([]);
+const sneakers = ref<Sneaker[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 const totalItems = ref(0);
@@ -65,7 +67,7 @@ function onPageChange(newPage: number) {
               <CartItems v-for="(sneak, i) in sneakers" :key="i" :item="sneak" />
             </div>
             <div class="flex justify-center mt-8">
-              <Pagination
+              <PaginationPage
                 :current-page="filters.page"
                 :page-size="filters.limit"
                 :total="totalItems"

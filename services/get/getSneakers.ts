@@ -8,8 +8,8 @@ export default async function getSneakers() {
     }
 
     return data;
-  } catch (err: any) {
-    console.error('Ошибка при загрузке сникеров:', err.message);
+  } catch (err: unknown) {
+    console.error('Ошибка при загрузке сникеров:', err);
     throw err;
   }
 }

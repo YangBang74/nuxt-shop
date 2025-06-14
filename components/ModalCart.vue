@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useCartShop } from '#imports';
 const cart = useCartShop();
 </script>
 <template>
@@ -56,6 +57,5 @@ const cart = useCartShop();
         </div>
       </div>
     </div>
-    <!-- <div class="px-5 mt-4" v-else>пока корзина пуста</div> -->
   </article>
 </template>

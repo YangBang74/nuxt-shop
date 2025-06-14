@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const modelValue = defineModel<{
+const modelValue = defineModel() as Ref<{
   priceFrom: number | null;
   priceTo: number | null;
   selectSize: number | null;
   selectStyle: string | null;
   selectBrand: string | null;
-}>();
+}>;
 
 const sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
 const styles = ['running', 'casual', 'basketball', 'skate', 'minimal'];
@@ -19,7 +19,15 @@ const resetValues = () => {
   modelValue.value.selectBrand = null;
 };
 
-function selectItem<T extends keyof typeof modelValue.value>(item: any, field: T) {
+type FilterModel = {
+  priceFrom: number | null;
+  priceTo: number | null;
+  selectSize: number | null;
+  selectStyle: string | null;
+  selectBrand: string | null;
+};
+
+function selectItem<K extends keyof FilterModel>(item: FilterModel[K], field: K) {
   modelValue.value[field] = modelValue.value[field] === item ? null : item;
 }
 </script>

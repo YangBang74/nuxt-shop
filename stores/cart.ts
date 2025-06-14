@@ -1,31 +1,31 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-
+import type { Sneaker } from '~/shared/types/sneaker';
 export const useCartShop = defineStore(
   'cart',
   () => {
-    const sneakers = ref<any[]>([]);
+    const sneakers = ref<Sneaker[]>([]);
     const totalPrice = ref<number>(0);
 
-    function addToCart(item: any, size: number) {
+    function addToCart(item: Sneaker, size: number) {
       sneakers.value.push({ ...item, size });
       totalPrice.value += item.price;
     }
 
-    function deleteItem(index: number) {
+    function deleteItem(ix: number) {
       if (!Array.isArray(sneakers.value)) {
         console.warn('sneakers is not an array');
         return;
       }
 
-      if (index < 0 || index >= sneakers.value.length) {
-        console.warn(`Индекс ${index} вне допустимого диапазона`);
+      if (ix < 0 || ix >= sneakers.value.length) {
+        console.warn(`Индекс ${ix} вне допустимого диапазона`);
         return;
       }
 
-      const removedItem = sneakers.value[index];
+      const removedItem = sneakers.value[ix];
       totalPrice.value -= removedItem.price;
-      sneakers.value.splice(index, 1);
+      sneakers.value.splice(ix, 1);
     }
 
     function nullItems() {

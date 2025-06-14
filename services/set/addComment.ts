@@ -1,4 +1,5 @@
-export const addComment = async (comments: Comment) => {
+import type { NewComment } from '~/shared/types/Comment';
+export const addComment = async (comments: NewComment) => {
   try {
     const response = await fetch('https://175061237ca5525f.mokky.dev/comments', {
       method: 'POST',

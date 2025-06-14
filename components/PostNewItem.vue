@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { addCart } from '~/services/set/addNewItem';
+import { ref } from 'vue';
 
-const cartName = ref<string | null>(null);
-const cartPrice = ref<number | null>(null);
-const cartBrand = ref<string | null>(null);
-const cartImage = ref<string | null>(null);
-const cartSizes = ref<number[] | null[]>([]);
-const cartStyles = ref<string[] | null[]>([]);
+const cartName = ref<string>('');
+const cartPrice = ref<string>('');
+const cartBrand = ref<string>('');
+const cartImage = ref<string>('');
+const cartSizes = ref<number[]>([]);
+const cartStyles = ref<string[]>([]);
+
 const sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
 const styles = ['running', 'casual', 'basketball', 'skate', 'minimal'];
-const messageIsActive = ref<boolean>(false);
+
+const messageIsActive = ref(false);
 
 const selectSize = (item: number) => {
   const idx = cartSizes.value.indexOf(item);
@@ -29,12 +32,8 @@ const selectStyles = (item: string) => {
   }
 };
 
-const emit = defineEmits<{
-  (e: 'close'): void;
-}>();
-
 const message = () => {
-  if (!messageIsActive) {
+  if (!messageIsActive.value) {
     messageIsActive.value = true;
     setTimeout(() => {
       messageIsActive.value = false;
@@ -46,28 +45,32 @@ const message = () => {
 
 const addItem = (event: Event) => {
   event.preventDefault();
-  // prettier-ignore
+
   const newProduct = {
-    'title': cartName.value,
-    'image': cartImage.value,
-    'sizes': cartSizes.value,
-    'style': cartStyles.value,
-    'price': Number(cartPrice.value),
-    'brand': cartBrand.value,
-    'rating': 0,
-  //
+    title: cartName.value,
+    image: cartImage.value,
+    sizes: cartSizes.value,
+    style: cartStyles.value,
+    price: Number(cartPrice.value),
+    brand: cartBrand.value,
+    rating: 0,
   };
+
   try {
-    const data = addCart(newProduct);
-    cartName.value = null;
-    cartPrice.value = null;
-    cartBrand.value = null;
-    cartImage.value = null;
+    addCart(newProduct);
+    cartName.value = '';
+    cartPrice.value = '';
+    cartBrand.value = '';
+    cartImage.value = '';
     cartSizes.value = [];
     cartStyles.value = [];
     message();
-  } catch (err) {
-    return err?.message;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error('Неизвестная ошибка');
+    }
   }
 };
 </script>

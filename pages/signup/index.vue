@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { signUp } from '@/services/set/signUp';
 import { useUserStore } from '~/stores/user';
 import { useRouter } from 'vue-router';
+import type { Sign } from '~/shared/types/sign';
 
 definePageMeta({
   title: 'Регистрация — Nuxt Shop',
@@ -21,14 +22,17 @@ const registerFunction = async (event: Event) => {
   event.preventDefault();
   error.value = '';
   try {
-    const data = await signUp(name.value, mail.value, pass.value);
-    if (typeof data === 'string') {
-      error.value = data;
+    const response = await signUp(name.value, mail.value, pass.value);
+    if (typeof response === 'string') {
+      error.value = response;
       return;
     }
-    user.setUser(data.data.fullName, data.data.email, data.token, data.data.role, data.data.id);
+    const data = response as Sign;
+    const role = data.data.role as UserRole;
+    user.setUser(data.data.fullName, data.data.email, data.token, role, data.data.id);
+
     await router.push('/');
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
     error.value = 'Непредвиденная ошибка при регистрации';
   }
@@ -90,7 +94,3 @@ const registerFunction = async (event: Event) => {
     </div>
   </section>
 </template>
-
-<style scoped>
-/* Все стили заданы через TailwindCSS */
-</style>

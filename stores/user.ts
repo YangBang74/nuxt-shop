@@ -1,50 +1,36 @@
-import js from '@eslint/js'
-import vue from 'eslint-plugin-vue'
-import nuxt from 'eslint-plugin-nuxt'
-import parser from 'vue-eslint-parser'
-import tsParser from '@typescript-eslint/parser'
+import { defineStore } from 'pinia';
+import { navigateTo } from '#app';
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
-export default [
-  {
-    ignores: ['**/node_modules/**', '**/.nuxt/**', '**/dist/**', '**/.output/**']
-  },
-  js.configs.recommended,
-  {
-    files: ['**/*.vue'],
-    languageOptions: {
-      parser, // vue-eslint-parser
-      parserOptions: {
-        parser: tsParser, // 👈 это вложенный TS-парсер для <script lang="ts">
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        extraFileExtensions: ['.vue']
-      },
-      globals: {
-        defineNuxtConfig: 'readonly',
-        defineNuxtRouteMiddleware: 'readonly',
-        navigateTo: 'readonly',
-        defineEventHandler: 'readonly',
-        readBody: 'readonly',
-        useRuntimeConfig: 'readonly',
-        useState: 'readonly',
-        $fetch: 'readonly',
-        definePageMeta: 'readonly',
-        defineNuxtPlugin: 'readonly',
-        ref: 'readonly',
-        process: 'readonly',
-        fetch: 'readonly',
-        alert: 'readonly',
-        console: 'readonly',
-      }
-    },
-    plugins: {
-      vue,
-      nuxt
-    },
-    rules: {
-      'no-console': 'warn',
-      'vue/multi-word-component-names': 'off'
+export type UserRole = 'admin' | 'user';
+
+export const useUserStore = defineStore(
+  'user',
+  () => {
+    const fullName = ref<string | null>(null);
+    const email = ref<string | null>(null);
+    const token = ref<string | null>(null);
+    const role = ref<UserRole | null>(null);
+    const id = ref<number | null>(null);
+    function setUser(name: string, mail: string, jwt: string, userRole: UserRole, ix: number) {
+      fullName.value = name;
+      email.value = mail;
+      token.value = jwt;
+      role.value = userRole;
+      id.value = ix;
     }
+
+    function logout() {
+      fullName.value = null;
+      email.value = null;
+      token.value = null;
+      role.value = null;
+      id.value = null;
+      return navigateTo('/', { replace: true });
+    }
+
+    return { fullName, email, token, role, id, setUser, logout };
+  },
+  {
+    persist: true,
   }
-]
+);

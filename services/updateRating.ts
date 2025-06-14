@@ -1,6 +1,9 @@
-export const updateProductRating = async (id: number, comment: Comment) => {
+import type { Ref } from 'vue';
+import type { Comment } from '~/shared/types/Comment';
+
+export const updateProductRating = async (id: number, comments: Comment[]) => {
   try {
-    const productComments = comment.value.filter(
+    const productComments = comments.filter(
       (c) => c.productId === id && typeof c.rating === 'number'
     );
     if (productComments.length === 0) return;

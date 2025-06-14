@@ -20,8 +20,8 @@ function cartToString() {
     return 'Корзина пуста';
   }
   return cart.sneakers
-    .map((item, index) => {
-      return `Товар ${index + 1}: ${item.title} — ${item.price} тмт (id: ${item.id})`;
+    .map((item, ix) => {
+      return `Товар ${ix + 1}: ${item.title} — ${item.price} тмт (id: ${item.id})`;
     })
     .join('\n');
 }

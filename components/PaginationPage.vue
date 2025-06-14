@@ -1,3 +1,12 @@
+<script setup lang="ts">
+const props = defineProps<{
+  currentPage: number;
+  pageSize: number;
+  total: number;
+}>();
+
+const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
+</script>
 <template>
   <div class="flex items-center space-x-2">
     <button
@@ -19,13 +28,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-const props = defineProps<{
-  currentPage: number;
-  pageSize: number;
-  total: number;
-}>();
-
-const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
-</script>

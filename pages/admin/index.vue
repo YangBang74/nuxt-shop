@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import getSneakers from '@/services/get/getSneakers';
-import { useUserStore } from '#imports';
 
 definePageMeta({
   layout: 'auth',
@@ -12,7 +11,6 @@ const activeModule = useCookie<'home' | 'add' | 'change'>('activeModule', {
 });
 
 const addIsActive = computed(() => activeModule.value === 'add');
-const changeIsActive = computed(() => activeModule.value === 'change');
 
 const setModule = (module: 'home' | 'add' | 'change') => {
   activeModule.value = module;
@@ -20,13 +18,17 @@ const setModule = (module: 'home' | 'add' | 'change') => {
 
 const sneakers = ref([]);
 const loading = ref(false);
-const fetchSneakersList = async () => {
+const fetchSneakersList = async (): Promise<string | void> => {
   loading.value = true;
   try {
     const data = await getSneakers();
     sneakers.value = data;
-  } catch (err: any) {
-    return err?.message || 'Ошибка при получении данных';
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return err.message;
+    } else {
+      return 'Ошибка при получении данных';
+    }
   } finally {
     loading.value = false;
   }

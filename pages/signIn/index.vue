@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { signIn } from '@/services/set/signIn';
 import { useUserStore } from '~/stores/user';
 import { useRouter } from 'vue-router';
+import type { Sign } from '~/shared/types/sign';
 
 definePageMeta({
   title: 'Вход — Nuxt Shop',
@@ -25,17 +26,12 @@ const registerFunction = async (event: Event) => {
       error.value = response;
       return;
     }
-    console.log(response);
+    const data = response as Sign;
+    const role = data.data.role as UserRole;
+    user.setUser(data.data.fullName, data.data.email, data.token, role, data.data.id);
 
-    user.setUser(
-      response.data.fullName,
-      response.data.email,
-      response.token,
-      response.data.role,
-      response.data.id
-    );
     await router.push('/');
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
     error.value = 'Непредвиденная ошибка при входе';
   }
