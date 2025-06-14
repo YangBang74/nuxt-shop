@@ -10,7 +10,7 @@ export const updateProductRating = async (id: number, comments: Comment[]) => {
     const sum = productComments.reduce((acc, c) => acc + c.rating, 0);
     const avgRating = Number((sum / productComments.length).toFixed(1));
 
-    const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${id}`, {
+    const res = await fetch(`https://175061237ca5525f.mokky.dev/sneakers/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

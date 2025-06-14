@@ -1,6 +1,6 @@
 export const addCart = async (product: unknown) => {
   try {
-    const response = await fetch('https://175061237ca5525f.mokky.dev/snakers', {
+    const response = await fetch('https://175061237ca5525f.mokky.dev/sneakers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

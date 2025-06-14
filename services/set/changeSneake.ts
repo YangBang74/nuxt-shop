@@ -9,7 +9,7 @@ export async function updateSneaker(
     styles: string[];
   }
 ) {
-  const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${id}`, {
+  const res = await fetch(`https://175061237ca5525f.mokky.dev/sneakers/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

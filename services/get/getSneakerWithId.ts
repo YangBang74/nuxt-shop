@@ -7,7 +7,7 @@ export async function fetchData(
 ): Promise<void | string> {
   loader.value = true;
   try {
-    const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers/${id}`);
+    const res = await fetch(`https://175061237ca5525f.mokky.dev/sneakers/${id}`);
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message || 'Ошибка при получении данных');

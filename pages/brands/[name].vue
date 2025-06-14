@@ -25,7 +25,7 @@ async function fetchData() {
     error.value = null;
 
     const response = await fetch(
-      `https://175061237ca5525f.mokky.dev/snakers?brand=${encodeURIComponent(name)}`
+      `https://175061237ca5525f.mokky.dev/sneakers?brand=${encodeURIComponent(name)}`
     );
 
     const data = await response.json();

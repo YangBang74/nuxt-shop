@@ -28,7 +28,7 @@ export async function getWithFilter(params: FilterParams): Promise<SneakersRespo
   if (selectStyle != null) query.append('style[]', selectStyle);
   if (selectBrand != null) query.append('brand', selectBrand);
 
-  const res = await fetch(`https://175061237ca5525f.mokky.dev/snakers?${query.toString()}`);
+  const res = await fetch(`https://175061237ca5525f.mokky.dev/sneakers?${query.toString()}`);
 
   if (!res.ok) throw new Error(`Ошибка ${res.status}`);
 

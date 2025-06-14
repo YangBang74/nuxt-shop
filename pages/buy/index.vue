@@ -3,6 +3,7 @@ import { useCartShop } from '~/stores/cart';
 import { sendTelegramMessage } from '~/services/set/sendTelegramBot';
 import ButtonLoader from '~/components/UI/ButtonLoader.vue';
 import OkButton from '~/components/UI/OkButton.vue';
+import { userBuy } from '~/services/set/savePurchasedItems';
 
 const cart = useCartShop();
 const name = ref('');
@@ -43,6 +44,7 @@ const submitOrder = async () => {
 Общая сумма: ${sumPrice.value + 20} тмт
 ${cartToString()}`;
     await sendTelegramMessage(message);
+    userBuy();
     allGood.value = true;
     setTimeout(() => {
       allGood.value = false;

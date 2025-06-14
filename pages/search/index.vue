@@ -30,7 +30,7 @@ watchEffect(async () => {
 
   try {
     const response = await fetch(
-      `https://175061237ca5525f.mokky.dev/snakers?title=*${encodeURIComponent(currentQueryValue)}`
+      `https://175061237ca5525f.mokky.dev/sneakers?title=*${encodeURIComponent(currentQueryValue)}`
     );
 
     if (!response.ok) {
