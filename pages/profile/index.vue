@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '#imports';
 
 definePageMeta({
   layout: 'default',
@@ -8,6 +10,7 @@ definePageMeta({
 
 const userStore = useUserStore();
 const user = computed(() => userStore);
+
 const router = useRouter();
 
 const logout = () => {
@@ -17,24 +20,32 @@ const logout = () => {
 </script>
 
 <template>
-  <section class="py-16">
+  <section class="py-20 bg-gray-100 min-h-screen">
     <div class="container">
-      <div class="mx-auto p-8 max-w-2xl bg-white rounded-xl shadow">
-        <h1 class="text-3xl font-bold mb-6">Профиль пользователя</h1>
+      <div class="mx-auto max-w-xl bg-white rounded-2xl shadow-xl p-10">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Профиль</h1>
 
         <div v-if="user">
-          <p class="mb-4"><strong>ID:</strong> {{ user.id }}</p>
-          <p class="mb-4"><strong>Имя:</strong> {{ user.fullName }}</p>
-          <p class="mb-4"><strong>Email:</strong> {{ user.email }}</p>
+          <p class="mb-4 text-gray-700"><strong>ID:</strong> {{ user.id }}</p>
+
+          <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2">Имя:</label>
+            <div class="flex items-center gap-3">
+              <span class="text-gray-800 text-lg">{{ user.fullName }}</span>
+            </div>
+          </div>
+
+          <p class="mb-6 text-gray-700"><strong>Email:</strong> {{ user.email }}</p>
 
           <button
             @click="logout"
-            class="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+            class="w-full mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
           >
-            Выйти из аккаунта
+            Выйти
           </button>
         </div>
-        <div v-else>
+
+        <div v-else class="text-center text-gray-600">
           <p>Вы не авторизованы.</p>
           <NuxtLink to="/signin" class="text-blue-500 underline">Войти</NuxtLink>
         </div>
