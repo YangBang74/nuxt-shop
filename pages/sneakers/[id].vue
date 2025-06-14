@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { useCartShop } from '~/stores/cart';
 import Rating from '~/components/Rating.vue';
 import OkButton from '~/components/UI/OkButton.vue';

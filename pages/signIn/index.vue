@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { signIn } from '@/services/set/signIn';
 import { useUserStore } from '~/stores/user';
-import { useRouter } from 'vue-router';
+import type { UserRole } from '~/stores/user';
 import type { Sign } from '~/shared/types/sign';
 
 definePageMeta({

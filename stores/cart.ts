@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import type { Sneaker } from '~/shared/types/sneaker';
 export const useCartShop = defineStore(
   'cart',

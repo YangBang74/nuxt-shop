@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute } from '#app';
 import type { Sneaker } from '~/shared/types/sneaker';
 import Loader from '~/components/UI/Loader.vue';
 

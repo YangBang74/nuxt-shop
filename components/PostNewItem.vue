@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { addCart } from '~/services/set/addNewItem';
-import { ref } from 'vue';
 
 const cartName = ref<string>('');
 const cartPrice = ref<string>('');

@@ -1,4 +1,3 @@
-import type { Ref } from 'vue';
 import type { Comment } from '~/shared/types/Comment';
 
 export const updateProductRating = async (id: number, comments: Comment[]) => {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { useCartShop } from '~/stores/cart';
 import { sendTelegramMessage } from '~/services/set/sendTelegramBot';
 import ButtonLoader from '~/components/UI/ButtonLoader.vue';

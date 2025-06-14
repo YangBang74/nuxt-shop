@@ -4,6 +4,7 @@ import { getComment } from '~/services/get/getComments';
 import { addComment } from '~/services/set/addComment';
 import { updateProductRating } from '~/services/updateRating';
 import type { NewComment, Comment } from '~/shared/types/Comment';
+import { useUserStore } from '#imports';
 
 const route = useRoute();
 const productId = Number(route.params.id);

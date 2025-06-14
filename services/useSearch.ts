@@ -1,6 +1,3 @@
-import { ref } from 'vue';
-import { useRouter, useRoute } from '#imports';
-
 export function useSearch() {
   const query = ref('');
   const router = useRouter();

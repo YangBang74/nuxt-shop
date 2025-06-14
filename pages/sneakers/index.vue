@@ -3,7 +3,6 @@ import { getWithFilter } from '~/services/get/filterForSneakers';
 import type { FilterParams } from '~/services/get/filterForSneakers';
 import type { Sneaker } from '~/shared/types/sneaker';
 import Loader from '~/components/UI/Loader.vue';
-import Pagination from '~/components/PaginationPage.vue';
 import PaginationPage from '~/components/PaginationPage.vue';
 
 definePageMeta({ layout: 'default' });

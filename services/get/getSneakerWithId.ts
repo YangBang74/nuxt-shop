@@ -1,4 +1,3 @@
-import type { Ref } from 'vue';
 import type { Sneaker } from '~/shared/types/sneaker';
 
 export async function fetchData(

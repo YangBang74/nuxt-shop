@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useRoute } from '#app';
-import { ref, watchEffect } from 'vue';
 import Loader from '~/components/UI/Loader.vue';
 import type { Sneaker } from '~/shared/types/sneaker';
 
@@ -41,13 +39,13 @@ watchEffect(async () => {
         const errorData = await response.json();
         errorMessage = errorData.message || errorMessage;
       } catch {
+        error.value = errorMessage;
+        results.value = [];
+        return;
       }
-      error.value = errorMessage;
-      results.value = [];
-      return;
+      const data = await response.json();
+      results.value = data as Sneaker[];
     }
-    const data = await response.json();
-    results.value = data as Sneaker[];
   } catch (err: unknown) {
     console.error('Ошибка при выполнении поиска:', err);
 
