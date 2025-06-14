@@ -1,17 +1,12 @@
 import { useUserStore } from '#imports';
 import { useCartShop } from '#imports';
-
-const user = useUserStore();
-const cart = useCartShop();
+import { getUser } from '../get/getUserDates';
 
 export const userBuy = async () => {
+  const user = useUserStore();
+  const cart = useCartShop();
   try {
-    const res = await fetch(`https://175061237ca5525f.mokky.dev/users/${user.id}`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    const userData = await res.json();
+    const userData = await getUser();
 
     const oldCart = userData.cart || [];
 
@@ -24,6 +19,7 @@ export const userBuy = async () => {
     const uniqueCart = Array.from(
       new Map(mergedCart.map((item) => [`${item.id}_${item.size}`, item])).values()
     );
+    console.log(uniqueCart);
 
     const response = await fetch(`https://175061237ca5525f.mokky.dev/users/${user.id}`, {
       method: 'PATCH',
