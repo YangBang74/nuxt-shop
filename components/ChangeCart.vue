@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import { updateSneaker } from '~/services/set/changeSneake';
+import { updateSneaker, deleteSneaker } from '~/services/set/changeSneake';
+import type { Sneaker } from '~/shared/types/sneaker';
+
 const props = defineProps<{
-  item: {
-    image: string;
-    id: number;
-    brand: string;
-    rating: number;
-    styles: string[];
-    title: string;
-    sizes: number[];
-    price: number;
-  };
+  item: Sneaker;
+}>();
+const emit = defineEmits<{
+  (e: 'deleted', id: number): void;
 }>();
 
 const isEditing = ref(false);
 const isSaving = ref(false);
+const isDeleting = ref(false);
 const saveStatus = ref<'idle' | 'saving' | 'saved' | 'error'>('idle');
+const deleteStatus = ref<'idle' | 'deleting' | 'deleted' | 'error'>('idle');
+
 const currentTitle = ref(props.item.title);
 const currentBrand = ref(props.item.brand);
 const currentPrice = ref(props.item.price);
 const currentRating = ref(props.item.rating);
-const currentSizes = ref<number[]>([...props.item.sizes]);
-const currentStyles = ref<string[]>([...props.item.styles]);
+const currentSizes = ref<number[]>([...(props.item.sizes ?? [])]);
+const currentStyles = ref<string[]>([...(props.item.styles ?? [])]);
 
 const editTitle = ref(currentTitle.value);
 const editBrand = ref(currentBrand.value);
@@ -81,6 +80,22 @@ const saveChanges = async () => {
     saveStatus.value = 'error';
   } finally {
     isSaving.value = false;
+  }
+};
+
+const deleteItem = async () => {
+  if (!confirm('Вы уверены, что хотите удалить этот товар?')) return;
+  isDeleting.value = true;
+  deleteStatus.value = 'deleting';
+  try {
+    await deleteSneaker(props.item.id);
+    deleteStatus.value = 'deleted';
+    emit('deleted', props.item.id);
+  } catch (err) {
+    console.error('Ошибка при удалении товара:', err);
+    deleteStatus.value = 'error';
+  } finally {
+    isDeleting.value = false;
   }
 };
 </script>
@@ -204,6 +219,17 @@ const saveChanges = async () => {
             </button>
           </template>
           <template v-else>
+            <template v-if="isEditing">
+              <button
+                type="button"
+                @click="deleteItem"
+                :disabled="isDeleting"
+                class="flex items-center justify-center w-8 rounded-lg hover:text-red-600 h-8 bg-gray-200 transition-colors ml-2"
+                aria-label="Удалить"
+              >
+                <Icon name="mdi:delete" class="w-5 h-5" />
+              </button>
+            </template>
             <button
               type="button"
               @click="saveChanges"

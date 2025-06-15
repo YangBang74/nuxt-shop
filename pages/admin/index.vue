@@ -23,6 +23,7 @@ const fetchSneakersList = async (): Promise<string | void> => {
   try {
     const data = await getSneakers();
     sneakers.value = data;
+    console.log(sneakers.value);
   } catch (err: unknown) {
     if (err instanceof Error) {
       return err.message;
