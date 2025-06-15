@@ -16,14 +16,14 @@ const saveStatus = ref<'idle' | 'saving' | 'saved' | 'error'>('idle');
 const deleteStatus = ref<'idle' | 'deleting' | 'deleted' | 'error'>('idle');
 
 const currentTitle = ref(props.item.title);
-const currentBrand = ref(props.item.brand);
+const currentBrand = ref<string>(props.item.brand || '');
 const currentPrice = ref(props.item.price);
 const currentRating = ref(props.item.rating);
 const currentSizes = ref<number[]>([...(props.item.sizes ?? [])]);
 const currentStyles = ref<string[]>([...(props.item.styles ?? [])]);
 
 const editTitle = ref(currentTitle.value);
-const editBrand = ref(currentBrand.value);
+const editBrand = ref<string>(currentBrand.value || '');
 const editPrice = ref(currentPrice.value);
 const editRating = ref(currentRating.value);
 const editSizesString = ref(currentSizes.value.join(','));

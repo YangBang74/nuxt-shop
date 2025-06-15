@@ -10,7 +10,9 @@ definePageMeta({
   layout: 'default',
 });
 
-const user = ref<{ fullName: string; email: string } | null>(null);
+type CartItem = { id: number; size: number };
+
+const user = ref<{ fullName: string; email: string; cart: CartItem[] } | null>(null);
 const userStore = useUserStore();
 
 const loading = ref<boolean>(false);
@@ -82,7 +84,7 @@ const logout = () => {
           <div v-if="sneakers.length" class="flex items-start justify-start gap-10">
             <div
               v-for="(sneak, i) in sneakers"
-              :key="sneak.id"
+              :key="i"
               class="group border border-gray-200 rounded-xl p-4 bg-gray-50 hover:bg-white shadow-sm hover:shadow-md transition"
             >
               <NuxtImg

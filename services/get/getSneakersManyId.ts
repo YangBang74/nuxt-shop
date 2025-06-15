@@ -1,5 +1,4 @@
 import type { Sneaker } from '~/shared/types/sneaker';
-import { ref, type Ref } from 'vue';
 
 export async function fetchMultipleSneakers(
   sneakers: Ref<Sneaker[]>,

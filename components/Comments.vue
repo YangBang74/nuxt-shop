@@ -91,13 +91,15 @@ const isCommented = computed(() =>
   comments.value.some((comment) => comment.authorId === userLocal.id)
 );
 
-const userDate = getUser();
-console.log(userDate);
+type CartItem = {
+  id: number | string;
+  size: number;
+};
 
 onMounted(async () => {
   try {
     const userDate = await getUser();
-    const isAlreadyInCart = userDate?.cart?.some((item) => item.id === productId);
+    const isAlreadyInCart = userDate?.cart?.some((item: CartItem) => Number(item.id) === productId);
     if (isAlreadyInCart) {
       userCanVote.value = true;
     }

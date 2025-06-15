@@ -16,7 +16,6 @@ const activeModule = useCookie<'home' | 'add' | 'change'>('activeModule', {
   default: () => 'home',
 });
 
-const addIsActive = computed(() => activeModule.value === 'add');
 const setModule = (module: 'home' | 'add' | 'change') => {
   activeModule.value = module;
 };

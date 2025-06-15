@@ -4,9 +4,6 @@ const props = defineProps<{
   pageSize: number;
   total: number;
 }>();
-const emit = defineEmits<{
-  (e: 'change', page: number): void;
-}>();
 const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
 </script>
 <template>
