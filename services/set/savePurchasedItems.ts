@@ -7,6 +7,7 @@ export const userBuy = async () => {
   const cart = useCartShop();
   try {
     const userData = await getUser();
+    console.log(userData);
 
     const oldCart = userData.cart || [];
 
@@ -16,10 +17,6 @@ export const userBuy = async () => {
     }));
 
     const mergedCart = [...oldCart, ...newCart];
-    const uniqueCart = Array.from(
-      new Map(mergedCart.map((item) => [`${item.id}_${item.size}`, item])).values()
-    );
-    console.log(uniqueCart);
 
     const response = await fetch(`https://175061237ca5525f.mokky.dev/users/${user.id}`, {
       method: 'PATCH',
@@ -27,7 +24,7 @@ export const userBuy = async () => {
         Authorization: `Bearer ${user.token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cart: uniqueCart }),
+      body: JSON.stringify({ cart: mergedCart }),
     });
 
     const data = await response.json();

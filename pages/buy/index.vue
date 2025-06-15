@@ -49,12 +49,12 @@ ${cartToString()}`;
     setTimeout(() => {
       allGood.value = false;
     }, 5000);
-    name.value = '';
-    phone.value = '+993 ';
-    city.value = '';
-    address.value = '';
-    details.value = '';
-    cart.nullItems();
+    // name.value = '';
+    // phone.value = '+993 ';
+    // city.value = '';
+    // address.value = '';
+    // details.value = '';
+    // cart.nullItems();
   } catch (err) {
     console.error(err);
     alert('Ошибка при отправке заказа');
