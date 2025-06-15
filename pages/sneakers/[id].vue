@@ -21,6 +21,12 @@ const setError = ref<boolean>(false);
 const getSneak = async () => {
   try {
     await fetchData(loading, sneakers, id);
+
+    useSeoMeta({
+      title: `${sneakers.value?.title} - YangShop`,
+      description: `${sneakers.value?.title} - по хорошей цене!`,
+      ogTitle: `sneakers.value?.title - YangShop`,
+    });
   } catch (e) {
     console.log(e);
   }
