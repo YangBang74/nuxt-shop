@@ -21,6 +21,8 @@ onMounted(async () => {
   try {
     const userData = await getUser();
     user.value = userData;
+    console.log(user.value);
+
     const cartIds = Array.isArray(userData?.cart)
       ? userData.cart.map((item: { id: string; size: number }) => item.id)
       : [];

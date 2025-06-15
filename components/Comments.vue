@@ -5,10 +5,11 @@ import { addComment } from '~/services/set/addComment';
 import { updateProductRating } from '~/services/updateRating';
 import type { NewComment, Comment } from '~/shared/types/Comment';
 import { useUserStore } from '#imports';
+import { getUser } from '~/services/get/getUserDates';
 
 const route = useRoute();
 const productId = Number(route.params.id);
-const user = useUserStore();
+const userLocal = useUserStore();
 
 const addCommentIsActive = ref(false);
 const author = ref<string>('');
@@ -17,7 +18,7 @@ const rating = ref<number>(0);
 const messageIsActive = ref<boolean>(false);
 const commentIsError = ref<boolean>(false);
 const commentErrorMessage = ref<string | null>(null);
-
+const userCanVote = ref<boolean>(false);
 const comments = ref<Comment[]>([]);
 
 const getComments = async (productId: number) => {
@@ -49,7 +50,7 @@ const addNewComment = async () => {
   const newComment: NewComment = {
     productId,
     author: author.value,
-    authorId: user.id,
+    authorId: userLocal.id,
     text: text.value,
     createdAt: new Date().toISOString(),
     rating: rating.value,
@@ -86,7 +87,24 @@ const closeMessage = () => {
   commentIsError.value = false;
 };
 
-const isCommented = computed(() => comments.value.some((comment) => comment.authorId === user.id));
+const isCommented = computed(() =>
+  comments.value.some((comment) => comment.authorId === userLocal.id)
+);
+
+const userDate = getUser();
+console.log(userDate);
+
+onMounted(async () => {
+  try {
+    const userDate = await getUser();
+    const isAlreadyInCart = userDate?.cart?.some((item) => item.id === productId);
+    if (isAlreadyInCart) {
+      userCanVote.value = true;
+    }
+  } catch (e) {
+    console.error('Ошибка при получении пользователя:', e);
+  }
+});
 </script>
 
 <template>
@@ -97,9 +115,10 @@ const isCommented = computed(() => comments.value.some((comment) => comment.auth
         <button
           type="button"
           @click="addCommentIsActive = !addCommentIsActive"
-          :disabled="isCommented"
+          :disabled="(isCommented, !userCanVote)"
         >
           <span v-if="isCommented">Вы уже оставили отзыв</span>
+          <span v-else-if="!userCanVote"></span>
           <span v-else>Добавить отзыв</span>
         </button>
       </div>
@@ -158,7 +177,6 @@ const isCommented = computed(() => comments.value.some((comment) => comment.auth
       <div v-else><p class="my-10 text-center">Отзывов пока нету</p></div>
     </div>
   </section>
-
   <!-- Modal messages -->
   <Teleport to="body">
     <Transition name="fade">

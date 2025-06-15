@@ -44,17 +44,17 @@ const submitOrder = async () => {
 Общая сумма: ${sumPrice.value + 20} тмт
 ${cartToString()}`;
     await sendTelegramMessage(message);
-    userBuy();
+    await userBuy();
     allGood.value = true;
     setTimeout(() => {
       allGood.value = false;
     }, 5000);
-    // name.value = '';
-    // phone.value = '+993 ';
-    // city.value = '';
-    // address.value = '';
-    // details.value = '';
-    // cart.nullItems();
+    name.value = '';
+    phone.value = '+993 ';
+    city.value = '';
+    address.value = '';
+    details.value = '';
+    cart.nullItems();
   } catch (err) {
     console.error(err);
     alert('Ошибка при отправке заказа');
